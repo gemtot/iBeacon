@@ -1,0 +1,54 @@
+/* iBeacon Major and Minor placehoder (represents min and max values)  */
+"0 - 65,535" = "0 - 65,535";
+
+/* Alert that is shown if Bluetooth is not available  */
+"Bluetooth must be available and enabled to configure your device as an iBeacon" = "Bluetooth moet beschikbaar zijn en aanstaan om je apparaat als een beacon the configuren";
+
+/* Label of iBeacon Toggle to start or stop broadcasting as an iBeacon  */
+"Broadcast Signal" = "Verzend Signaal";
+
+/* Structured message to display the paramaters of the beacon signal that is currently being broadcast  */
+"Broadcasting UUID: \n%@\n\nMajor: %@; Minor: %@\nMeasured Power: %@" = "Dit apparaat verzend UUID:\n%1$@\n\nMajor: %2$@  Minor: %3$@\nGemeten Vermogen: %4$@";
+
+/* Label shown in table cell to indicate deivce will broadcast the default measured power  */
+"Device Default" = "Gebruik Standaard Vermogen";
+
+/* Button to accept the iBeacon paramaters and dismiss the keyboard  */
+"Done" = "Gereed";
+
+/* Alert title for invalid values  */
+"Invalid Value" = "Invalid Value";
+
+/* Table cell label for beacon major value  */
+"Major Value" = "Major";
+
+/* Alert message to show if user enters an invalid Major or Minor value  */
+"Major and Minor keys can only accept a value between 0 and 65,535" = "Major and Minor value must be between 0 and 65,535";
+
+/* Table cell label for beacon measured power value  */
+"Measured Power" = "Vermogen";
+
+/* Table cell label for beacon minor value  */
+"Minor Value" = "Minor";
+
+/* Placehoder text for iBeacon name field  */
+"Name or UUID" = "Naam of UUID";
+
+/* OK button used to dismiss alerts  */
+"Okay" = "OK";
+
+/* Text at bottom of iBeacon view when not broadcasting an iBeacon signal  */
+"This device is not broadcasting an iBeacon signal" = "Dit apparaat zend geen iBeacon signaal uit";
+
+/* Description for selecting the device default power, shown on the pickser wheel.  Should be kept concise  */
+"Use Device Default Value" = "Gebruik Standaard Vermogen";
+
+/* Tabel cell label for beacon name or UUID value  */
+"iBeacon Name" = "iBeacon Naam";
+
+/* Header of second section of iBeacon view  */
+"iBeacon Paramaers" = "iBeacon Parameters";
+
+/* Header of first section of iBeacon view  */
+"iBeacon Status" = "iBeacon Status";
+

@@ -1,0 +1,48 @@
+/* iBeacon Major and Minor placehoder (represents min and max values)  */
+"0 - 65,535" = "0 - 65,535";
+
+/* Alert that is shown if Bluetooth is not available  */
+"Bluetooth must be available and enabled to configure your device as an iBeacon" = "ใช้สัญญาณ Bluetooth ในการแก้ไขระบบ";
+
+/* Label of iBeacon Toggle to start or stop broadcasting as an iBeacon  */
+"Broadcast Signal" = "ส่งสัญญาณ";
+
+/* Structured message to display the paramaters of the beacon signal that is currently being broadcast  */
+"Broadcasting UUID: \n\(UUID)\nMajor: \(major); Minor: \(minor)\nPower: \(powerString)" = "ส่งสัญญาณ เลขเครื่อง:\n\(UUID)\n\nเครื่องหลัก: \(major)  เครื่องรอง: \(minor)\nพลังงาน: \(powerString)";
+
+/* Label shown in table cell to indicate deivce will broadcast the default measured power  */
+"Device Default" = "ค่าเริ่มต้นของอุปกรณ์";
+
+/* Button to accept the iBeacon paramaters and dismiss the keyboard  */
+"Done" = "เสร็จ";
+
+/* Table cell label for beacon major value  */
+"Major Value" = "เครื่องหลัก";
+
+/* Table cell label for beacon measured power value  */
+"Measured Power" = "กำลังไฟฟ้าที่ถูกวัดแล้ว";
+
+/* Table cell label for beacon minor value  */
+"Minor Value" = "เครื่องรอง";
+
+/* Placehoder text for iBeacon name field  */
+"Name or UUID" = "ชื่อ หรือเลขเครื่อง";
+
+/* OK button used to dismiss alerts  */
+"Okay" = "ตกลง";
+
+/* Text at bottom of iBeacon view when not broadcasting an iBeacon signal  */
+"This device is not broadcasting an iBeacon signal" = "ไม่ได้ทำการส่งสัญญาณ iBeacon";
+
+/* Description for selecting the device default power, shown on the pickser wheel.  Should be kept concise  */
+"Use Device Default Value" = "ค่าเริ่มต้นของอุปกรณ์";
+
+/* Tabel cell label for beacon name or UUID value  */
+"iBeacon Name" = "ชื่อ iBeacon";
+
+/* Header of second section of iBeacon view  */
+"iBeacon Paramaers" = "ตัวแปรของ iBeacon";
+
+/* Header of first section of iBeacon view  */
+"iBeacon Status" = "สถานะ iBeacon";
+
