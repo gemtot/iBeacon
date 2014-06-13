@@ -11,5 +11,5 @@ PassKit's platform.
 
 ### Screen Shots
 
-[!ScreenShot 1](/Screenshot1.png?raw=true "Screen Shot") [!ScreenShot 2](/Screenshot2.png?raw=true "Screen Shot Power Picker")
+![ScreenShot 1](/Screenshot1.png?raw=true "Screen Shot") ![ScreenShot 2](/Screenshot2.png?raw=true "Screen Shot Power Picker")
 
