@@ -35,7 +35,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     
     // Singleton pattern
     class var sharedGTBeaconBroadcaster:GTBeaconBroadcaster {
-    return _GlobalGTBeaconBroadcasterSharedInstance
+        return _GlobalGTBeaconBroadcasterSharedInstance
     }
     
     init() {
@@ -122,6 +122,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
             let alert = UIAlertController(title: NSLocalizedString("Bluetooth must be available and enabled to configure your device as an iBeacon", comment:"Alert that is shown if Bluetooth is not available"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
             getTopWindow().presentViewController(alert, animated: true, completion: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName("iBeaconBroadcastStatus", object: nil, userInfo: ["broadcastStatus" : false])
             
         } else {
             
@@ -223,6 +224,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     
     //
     func getTopWindow()-> UIViewController {
+        
         var topViewController = UIApplication.sharedApplication().keyWindow.rootViewController
         
         while (topViewController.presentedViewController) {

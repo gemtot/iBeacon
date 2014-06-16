@@ -28,9 +28,9 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     let _dbPicker : UIPickerView = UIPickerView()
     let _numberToolbar : UIToolbar = UIToolbar(frame: CGRectMake(0.0,0.0,320.0,50.0))
 
-    // Variables
-    var _iBeaconConfig : GTStorage = GTStorage.sharedGTStorage // Dictionary containing beacon config parameters
-    var _beacon : GTBeaconBroadcaster = GTBeaconBroadcaster.sharedGTBeaconBroadcaster // Shared instance to allow continuous broadcasting once this vie is dismissed
+    // Shared objects
+    let _iBeaconConfig : GTStorage = GTStorage.sharedGTStorage // Dictionary containing beacon config parameters
+    let _beacon : GTBeaconBroadcaster = GTBeaconBroadcaster.sharedGTBeaconBroadcaster // Shared instance to allow continuous broadcasting after this view is dismissed
     
     init(coder aDecoder: NSCoder!)
     {
