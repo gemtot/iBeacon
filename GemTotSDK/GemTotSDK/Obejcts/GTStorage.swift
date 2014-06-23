@@ -45,7 +45,7 @@ class GTStorage: NSObject {
     
     func getValue(keyName: String, fromStore: String) -> AnyObject! {
         
-        if let path = checkStore(fromStore)? as? String? {
+        if let path = checkStore(fromStore)! as String? {
         
             let dict = NSDictionary(contentsOfFile: path)
         
@@ -72,7 +72,7 @@ class GTStorage: NSObject {
     
     func writeValue(value: AnyObject!, forKey: String, toStore: String) {
         
-        if let path = checkStore(toStore)? as? String? {
+        if let path = checkStore(toStore)! as String? {
  
             let dict = NSMutableDictionary(contentsOfFile: path)
         
