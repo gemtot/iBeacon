@@ -117,9 +117,11 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     
     func toggleStatus(notification: NSNotification) {
         
-        _toggleSwitch.setOn(notification.userInfo.objectForKey("broadcastStatus") as Bool, animated: false)
+        let packageContents : NSDictionary = notification.userInfo! as Dictionary
         
-        if (notification.userInfo.objectForKey("broadcastStatus") as Bool) {
+        _toggleSwitch.setOn(packageContents.objectForKey("broadcastStatus") as Bool, animated: false)
+        
+        if (packageContents.objectForKey("broadcastStatus") as Bool) {
             
             if (!_beacon.beaconStatus()) {
                 _beacon.startBeacon()
