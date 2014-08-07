@@ -32,7 +32,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     let _iBeaconConfig : GTStorage = GTStorage.sharedGTStorage // Dictionary containing beacon config parameters
     let _beacon : GTBeaconBroadcaster = GTBeaconBroadcaster.sharedGTBeaconBroadcaster // Shared instance to allow continuous broadcasting after this view is dismissed
     
-    init(coder aDecoder: NSCoder!)
+    required init(coder aDecoder: NSCoder!)
     {
         super.init(coder: aDecoder)
     }
@@ -395,7 +395,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             }
             
             // If an empty filed is submitted, replace with a 0 value
-            if (!textField.text.toInt()) {
+            if (textField.text == "") {
                 textField.text = "0"
                 return true
             }

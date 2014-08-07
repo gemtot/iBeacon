@@ -38,7 +38,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
         return _GlobalGTBeaconBroadcasterSharedInstance
     }
     
-    init() {
+    override init() {
         super.init()
         
         // Init the peripheral manager instance
@@ -130,7 +130,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
             let region = CLBeaconRegion(proximityUUID:beaconUUID!, major:withMajor.unsignedShortValue, minor:withMinor.unsignedShortValue, identifier:"com.gemtots.afr")
             
             // Attempt to set up a peripheral with the measured power
-            let peripheralData = region.peripheralDataWithMeasuredPower(withPower == 127 ? nil : withPower)
+            let peripheralData = region.peripheralDataWithMeasuredPower(withPower === 127 ? nil : withPower)
             // if we have a peripheral, start advertising
             if (peripheralData) {
                 

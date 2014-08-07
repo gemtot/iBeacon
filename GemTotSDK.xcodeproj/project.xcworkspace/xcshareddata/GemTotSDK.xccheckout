@@ -10,29 +10,29 @@
 	<string>GemTotSDK</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>E0EA9DEC-F101-4A74-8745-0D102AE1C36C</key>
+		<key>3C55CFAB3D2FCE2176B365F25F0D2F06D25E50A3</key>
 		<string>https://github.com/gemtot/iBeacon.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>GemTotSDK.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E0EA9DEC-F101-4A74-8745-0D102AE1C36C</key>
+		<key>3C55CFAB3D2FCE2176B365F25F0D2F06D25E50A3</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/gemtot/iBeacon.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E0EA9DEC-F101-4A74-8745-0D102AE1C36C</string>
+	<string>3C55CFAB3D2FCE2176B365F25F0D2F06D25E50A3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E0EA9DEC-F101-4A74-8745-0D102AE1C36C</string>
+			<string>3C55CFAB3D2FCE2176B365F25F0D2F06D25E50A3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>iBeacon_Github</string>
 		</dict>
