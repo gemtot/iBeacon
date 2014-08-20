@@ -132,7 +132,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
             // Attempt to set up a peripheral with the measured power
             let peripheralData = region.peripheralDataWithMeasuredPower((withPower.integerValue == 127) ? nil : withPower)
             // if we have a peripheral, start advertising
-            if (peripheralData) {
+            if (peripheralData != nil) {
                 
                 _peripheralManager!.startAdvertising(peripheralData)
                 
@@ -227,7 +227,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
         
         var topViewController = UIApplication.sharedApplication().keyWindow.rootViewController
         
-        while (topViewController.presentedViewController) {
+        while (topViewController.presentedViewController != nil) {
             topViewController = topViewController.presentedViewController
         }
         
