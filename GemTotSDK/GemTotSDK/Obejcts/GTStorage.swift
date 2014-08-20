@@ -94,7 +94,7 @@ class GTStorage: NSObject {
     *
     *  @param   storeName - the file name of the plist store 
     *
-    *  @return  the full path to the store on success or an empty string on failure
+    *  @return  the full path to the store on success or nil on failure
     *
     */
     
@@ -106,21 +106,23 @@ class GTStorage: NSObject {
         
         if (!fileManager.fileExistsAtPath(storePath)) {
             
-            let bundle = NSBundle.mainBundle().pathForResource(storeName, ofType:"plist")
-            var error : NSError? = nil
-            
-            fileManager.copyItemAtPath(bundle, toPath: storePath, error: &error)
-            
-            if (nil == error) {
+            if let bundle = NSBundle.mainBundle().pathForResource(storeName, ofType:"plist") {
+                var error : NSError? = nil
                 
-                return storePath
+                fileManager.copyItemAtPath(bundle, toPath: storePath, error: &error)
                 
+                if (nil == error) {
+                    
+                    return storePath
+                    
+                } else {
+                    
+                    NSLog( NSError.description())
+                    return nil
+                }
             } else {
-                
-                NSLog( NSError.description())
                 return nil
             }
-            
         } else {
             return storePath
         }
