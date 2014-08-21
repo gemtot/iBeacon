@@ -20,7 +20,6 @@
 
 import UIKit
 
-
 class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     // Constants - form elements
@@ -177,6 +176,66 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     func onKeyboardHide(notification: NSNotification!) {
         self.tableView.reloadData()
     }
+    
+    // Function to check if string is a UUID, or to generate a constant UUID from a string
+    func UUIDforString(UUIDNameOrString: String) -> String {
+        
+        var returnUUIDString: String = ""
+        let range = UUIDNameOrString.rangeOfString("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .RegularExpressionSearch)
+        
+        // Test if UUIDNameOrString is a valid UUID, and if so, set the return it
+        if (range != nil && countElements(UUIDNameOrString) == 36) {
+            
+          returnUUIDString = UUIDNameOrString
+            
+        } else {
+            
+            
+            var ccount: UInt16 = 16 + countElements(UUIDNameOrString)
+            
+            // Variable to hold the hashed namespace
+            var hashString: String = ""
+            
+            // Unique seed namespace - keep to generate UUIDs compatible with PassKit, or change to avoid conflicts
+            let nameSpace: String = "b8672a1f84f54e7c97bdff3e9cea6d7a"
+            
+            // Convert each byte of the seed namespace to a character value and append the character to the hashNS string
+            for var i = 0; i < countElements(nameSpace); i+=2 {
+                
+                var s = "0x" + String(Array(nameSpace)[i]) + String(Array(nameSpace)[i+1])
+                var charValue: UInt32 = 0
+                NSScanner.scannerWithString(s).scanHexInt(&charValue)
+                
+                hashString += String(UnicodeScalar(charValue))
+            }
+            
+            // Append the UUID String to the hash string
+            hashString += UUIDNameOrString
+              println(countElements(hashString))
+            println(hashString + " / " + hashString.GTsha1String() + "\n")// + "cock".GTsha1String())
+            
+          
+            returnUUIDString = hashString.GTsha1String()
+            
+            var part3: UInt32 = 0
+            var part4: UInt32 = 0
+            NSScanner.scannerWithString(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,12), end: advance(returnUUIDString.startIndex,16)))).scanHexInt(&part3)
+            NSScanner.scannerWithString(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,16), end: advance(returnUUIDString.startIndex,20)))).scanHexInt(&part4)
+            
+            let uuidPart3 = String(NSString(format:"%2X", (part3 & 0x0FFF) | 0x5000))
+            let uuidPart4 = String(NSString(format:"%2X", (part4 & 0x3FFF) | 0x8000))
+            
+            returnUUIDString =    "\(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,0), end: advance(returnUUIDString.startIndex,8))))-" +
+                "\(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,8), end: advance(returnUUIDString.startIndex,12))))-" +
+                "\(uuidPart3)-" +
+                "\(uuidPart4)-" +
+            "\(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,20), end: advance(returnUUIDString.startIndex,32))))"
+        }
+        
+        return returnUUIDString
+    }
+    
+    
     
     /**************************************************************************************
     *
@@ -434,7 +493,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             
         case 1:
             _iBeaconConfig.writeValue(textField.text as NSString, forKey:"beaconName", toStore:"iBeacon")
-            _iBeaconConfig.writeValue(PKUUID.UUIDforString(textField.text) as NSString, forKey:"UUID", toStore:"iBeacon")
+            _iBeaconConfig.writeValue(UUIDforString(textField.text) as NSString, forKey:"UUID", toStore:"iBeacon")
             
         case 2:
             _iBeaconConfig.writeValue(textField.text.toInt()! as NSNumber, forKey: "major", toStore: "iBeacon")

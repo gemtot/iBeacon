@@ -10,6 +10,7 @@
 		013E6BF6194812E500BD0928 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013E6BF5194812E500BD0928 /* SystemConfiguration.framework */; };
 		013E6BF91948137100BD0928 /* iBeacon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 013E6BF81948137100BD0928 /* iBeacon.plist */; };
 		013E6BFA1948137100BD0928 /* iBeacon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 013E6BF81948137100BD0928 /* iBeacon.plist */; };
+		0144DDEB19A5A9640053B4F4 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0144DDEA19A5A9640053B4F4 /* String.swift */; };
 		019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019496B8194ABF210008A2E7 /* GTBeaconTableViewController.swift */; };
 		019496BC194ABF320008A2E7 /* PKUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 019496BB194ABF320008A2E7 /* PKUUID.m */; };
 		019496C2194ABF6D0008A2E7 /* GemTotSDK.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 019496C1194ABF6D0008A2E7 /* GemTotSDK.entitlements */; };
@@ -40,6 +41,7 @@
 /* Begin PBXFileReference section */
 		013E6BF5194812E500BD0928 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		013E6BF81948137100BD0928 /* iBeacon.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iBeacon.plist; sourceTree = "<group>"; };
+		0144DDEA19A5A9640053B4F4 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		019496B8194ABF210008A2E7 /* GTBeaconTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GTBeaconTableViewController.swift; path = GemTotSDK/GemTotSDK/Views/GTBeaconTableViewController.swift; sourceTree = "<group>"; };
 		019496BA194ABF320008A2E7 /* PKUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PKUUID.h; path = GemTotSDK/GemTotSDK/Classes/PKUUID.h; sourceTree = "<group>"; };
 		019496BB194ABF320008A2E7 /* PKUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PKUUID.m; path = GemTotSDK/GemTotSDK/Classes/PKUUID.m; sourceTree = "<group>"; };
@@ -100,6 +102,14 @@
 			name = Assets;
 			sourceTree = "<group>";
 		};
+		0144DDE919A5A9340053B4F4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0144DDEA19A5A9640053B4F4 /* String.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		01C2689E1945A7280099B8C1 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +117,7 @@
 				01C26923194717E80099B8C1 /* Legacy Objective-C */,
 				01C268D41945A8EA0099B8C1 /* Views */,
 				01C268D31945A8CE0099B8C1 /* Objects */,
+				0144DDE919A5A9340053B4F4 /* Extensions */,
 				01C268A91945A7280099B8C1 /* GemTotSDK */,
 				01C268DE1945AA3D0099B8C1 /* Frameworks */,
 				01C268BE1945A7280099B8C1 /* GemTotSDKTests */,
@@ -315,6 +326,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0144DDEB19A5A9640053B4F4 /* String.swift in Sources */,
 				019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */,
 				019496BC194ABF320008A2E7 /* PKUUID.m in Sources */,
 				01C269191946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */,
