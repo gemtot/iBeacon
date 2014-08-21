@@ -180,59 +180,55 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     // Function to check if string is a UUID, or to generate a constant UUID from a string
     func UUIDforString(UUIDNameOrString: String) -> String {
         
-        var returnUUIDString: String = ""
+        // Test if UUIDNameOrString is a valid UUID, and if so, set the return it
         let range = UUIDNameOrString.rangeOfString("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .RegularExpressionSearch)
         
-        // Test if UUIDNameOrString is a valid UUID, and if so, set the return it
         if (range != nil && countElements(UUIDNameOrString) == 36) {
             
-          returnUUIDString = UUIDNameOrString
+          return UUIDNameOrString
             
         } else {
-            
             
             var ccount: UInt16 = 16 + countElements(UUIDNameOrString)
             
             // Variable to hold the hashed namespace
-            var hashString: String = ""
+            var hashString = NSMutableData()
             
             // Unique seed namespace - keep to generate UUIDs compatible with PassKit, or change to avoid conflicts
+            // Needs to be a hexadecimal value - ideally a UUID
             let nameSpace: String = "b8672a1f84f54e7c97bdff3e9cea6d7a"
             
-            // Convert each byte of the seed namespace to a character value and append the character to the hashNS string
+            // Convert each byte of the seed namespace to a character value and append the character byte
             for var i = 0; i < countElements(nameSpace); i+=2 {
                 
-                var s = "0x" + String(Array(nameSpace)[i]) + String(Array(nameSpace)[i+1])
                 var charValue: UInt32 = 0
+                let s = "0x" + String(Array(nameSpace)[i]) + String(Array(nameSpace)[i+1])
                 NSScanner.scannerWithString(s).scanHexInt(&charValue)
-                
-                hashString += String(UnicodeScalar(charValue))
+                hashString.appendBytes(&charValue, length: 1)
             }
             
-            // Append the UUID String to the hash string
-            hashString += UUIDNameOrString
-              println(countElements(hashString))
-            println(hashString + " / " + hashString.GTsha1String() + "\n")// + "cock".GTsha1String())
+            // Append the UUID String bytes to the hash input
+            let uuidString: NSData = NSString(CString:UUIDNameOrString, encoding:NSUTF8StringEncoding).dataUsingEncoding(NSUTF8StringEncoding)!
+            hashString.appendBytes(uuidString.bytes, length: uuidString.length)
             
-          
-            returnUUIDString = hashString.GTsha1String()
+            // SHA1 hash the input
+            let rawUUIDString = String(hashString.sha1())
             
+            // Build the UUID string as defined in RFC 4122
             var part3: UInt32 = 0
             var part4: UInt32 = 0
-            NSScanner.scannerWithString(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,12), end: advance(returnUUIDString.startIndex,16)))).scanHexInt(&part3)
-            NSScanner.scannerWithString(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,16), end: advance(returnUUIDString.startIndex,20)))).scanHexInt(&part4)
+            NSScanner.scannerWithString((rawUUIDString as NSString).substringWithRange(NSMakeRange(12, 4))).scanHexInt(&part3)
+            NSScanner.scannerWithString((rawUUIDString as NSString).substringWithRange(NSMakeRange(16, 4))).scanHexInt(&part4)
             
             let uuidPart3 = String(NSString(format:"%2X", (part3 & 0x0FFF) | 0x5000))
             let uuidPart4 = String(NSString(format:"%2X", (part4 & 0x3FFF) | 0x8000))
             
-            returnUUIDString =    "\(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,0), end: advance(returnUUIDString.startIndex,8))))-" +
-                "\(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,8), end: advance(returnUUIDString.startIndex,12))))-" +
-                "\(uuidPart3)-" +
-                "\(uuidPart4)-" +
-            "\(returnUUIDString.substringWithRange(Range(start:advance(returnUUIDString.startIndex,20), end: advance(returnUUIDString.startIndex,32))))"
+            return  "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(0, 8)))-" +
+                    "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(8, 4)))-" +
+                    "\(uuidPart3.lowercaseString)-" +
+                    "\(uuidPart4.lowercaseString)-" +
+                    "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(20, 12))))"
         }
-        
-        return returnUUIDString
     }
     
     
@@ -260,7 +256,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
    
     override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
-        
+
         if (indexPath!.section == 0) {
         
             var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
