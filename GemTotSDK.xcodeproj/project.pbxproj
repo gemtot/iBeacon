@@ -10,13 +10,13 @@
 		013E6BF6194812E500BD0928 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 013E6BF5194812E500BD0928 /* SystemConfiguration.framework */; };
 		013E6BF91948137100BD0928 /* iBeacon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 013E6BF81948137100BD0928 /* iBeacon.plist */; };
 		013E6BFA1948137100BD0928 /* iBeacon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 013E6BF81948137100BD0928 /* iBeacon.plist */; };
-		0144DDEB19A5A9640053B4F4 /* GTNSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0144DDEA19A5A9640053B4F4 /* GTNSData.swift */; };
 		019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019496B8194ABF210008A2E7 /* GTBeaconTableViewController.swift */; };
 		019496C2194ABF6D0008A2E7 /* GemTotSDK.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 019496C1194ABF6D0008A2E7 /* GemTotSDK.entitlements */; };
 		019496C5194ABF7A0008A2E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019496C3194ABF7A0008A2E7 /* Main.storyboard */; };
 		019496CA194ABF9F0008A2E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019496C9194ABF9F0008A2E7 /* Images.xcassets */; };
 		019496CC194ABFB60008A2E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019496CB194ABFB60008A2E7 /* AppDelegate.swift */; };
 		019496CF194ABFD00008A2E7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 019496D1194ABFD00008A2E7 /* Info.plist */; };
+		01C1203B19A7270B0009494C /* GTExtensionNSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C1203A19A7270B0009494C /* GTExtensionNSData.swift */; };
 		01C268C21945A7280099B8C1 /* GemTotiBeaconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C268C11945A7280099B8C1 /* GemTotiBeaconTests.swift */; };
 		01C268CF1945A85C0099B8C1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C268CE1945A85C0099B8C1 /* CoreLocation.framework */; };
 		01C268D11945A8660099B8C1 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C268D01945A8660099B8C1 /* CoreBluetooth.framework */; };
@@ -40,7 +40,6 @@
 /* Begin PBXFileReference section */
 		013E6BF5194812E500BD0928 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		013E6BF81948137100BD0928 /* iBeacon.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iBeacon.plist; sourceTree = "<group>"; };
-		0144DDEA19A5A9640053B4F4 /* GTNSData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTNSData.swift; sourceTree = "<group>"; };
 		019496B8194ABF210008A2E7 /* GTBeaconTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GTBeaconTableViewController.swift; path = GemTotSDK/GemTotSDK/Views/GTBeaconTableViewController.swift; sourceTree = "<group>"; };
 		019496BF194ABF530008A2E7 /* GemTotSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GemTotSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		019496C0194ABF530008A2E7 /* GemTotSDKTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GemTotSDKTests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -49,6 +48,7 @@
 		019496C9194ABF9F0008A2E7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		019496CB194ABFB60008A2E7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		019496D0194ABFD00008A2E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
+		01C1203A19A7270B0009494C /* GTExtensionNSData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GTExtensionNSData.swift; path = GemTotSDK/GemTotSDK/Extensions/GTExtensionNSData.swift; sourceTree = "<group>"; };
 		01C268A71945A7280099B8C1 /* GemTotSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GemTotSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C268BB1945A7280099B8C1 /* GemTotSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GemTotSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C268C01945A7280099B8C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 		0144DDE919A5A9340053B4F4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0144DDEA19A5A9640053B4F4 /* GTNSData.swift */,
+				01C1203A19A7270B0009494C /* GTExtensionNSData.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -321,8 +321,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0144DDEB19A5A9640053B4F4 /* GTNSData.swift in Sources */,
 				019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */,
+				01C1203B19A7270B0009494C /* GTExtensionNSData.swift in Sources */,
 				01C269191946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */,
 				019496CC194ABFB60008A2E7 /* AppDelegate.swift in Sources */,
 				01C26916194696260099B8C1 /* GTStorage.swift in Sources */,

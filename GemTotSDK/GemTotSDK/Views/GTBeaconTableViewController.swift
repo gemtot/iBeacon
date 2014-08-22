@@ -104,7 +104,15 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         let state = sender.isOn
         
         if (state == true) {
-            _beacon.startBeacon()
+            let beaconStarted = _beacon.startBeacon()
+            if (beaconStarted.success == false) {
+                _toggleSwitch.setOn(false, animated: false)
+                let alert = UIAlertController(title: NSLocalizedString("Error Starting Beacon", comment:"Alert title for problemn starting beacon"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.message = beaconStarted.error
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
+            }
+        
         } else {
             _beacon.stopBeacon()
         }
@@ -227,7 +235,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
                     "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(8, 4)))-" +
                     "\(uuidPart3.lowercaseString)-" +
                     "\(uuidPart4.lowercaseString)-" +
-                    "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(20, 12))))"
+                    "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(20, 12)))"
         }
     }
     
