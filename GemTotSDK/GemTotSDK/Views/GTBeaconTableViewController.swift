@@ -262,25 +262,36 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     override func tableView(tableView: UITableView?, didSelectRowAtIndexPath indexPath: NSIndexPath?) {
         tableView!.userInteractionEnabled = false
     }
-   
-    override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath?) -> UITableViewCell? {
 
-        if (indexPath!.section == 0) {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if (indexPath.section == 0) {
         
             var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
         
             // Add the image to the table cell
             let cellImage = UIImage(named:"iBeaconTableCell")
-            cell.imageView.image = cellImage
-                
+            if let imageView = cell.imageView {
+                imageView.image = cellImage
+            } else {
+                NSLog("imageView is nil")
+            }
+
             // Set the cell label
-            cell.textLabel.text = NSLocalizedString("Broadcast Signal", comment:"Label of iBeacon Toggle to start or stop broadcasting as an iBeacon") as String
-            cell.textLabel.font = UIFont.systemFontOfSize(16.0)
-                
+            if let textLabel = cell.textLabel {
+                textLabel.text = NSLocalizedString("Broadcast Signal", comment:"Label of iBeacon Toggle to start or stop broadcasting as an iBeacon") as String
+                textLabel.font = UIFont.systemFontOfSize(16.0)
+            } else {
+                NSLog("textLabel is nil")
+            }
+
             // Add the toggle to the table cell and
             cell.accessoryView = UIView(frame: _toggleSwitch.frame)
-            cell.accessoryView.addSubview(_toggleSwitch)
-                
+            if let accessoryView = cell.accessoryView {
+                accessoryView.addSubview(_toggleSwitch)
+            } else {
+                NSLog("accessoryView is nil")
+            }
+
             // Make the cell non-selectable (only the toggle will be active)
             cell.selectionStyle = UITableViewCellSelectionStyle.None
 
@@ -298,9 +309,13 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             ]
             
             // Set the cell label
-            cell.textLabel.text = iBeaconParamsLabels[indexPath!.row]
-            cell.textLabel.font = UIFont.systemFontOfSize(16.0)
-                
+            if let textLabel = cell.textLabel {
+                textLabel.text = iBeaconParamsLabels[indexPath.row]
+                textLabel.font = UIFont.systemFontOfSize(16.0)
+            } else {
+                NSLog("textLabel is nil")
+            }
+
             // Create and add a text field to the cell that will contain the value
             let optionalMargin: CGFloat = 10.0
             var valueField = UITextField(frame: CGRectMake(170, 10, cell.contentView.frame.size.width - 170 - optionalMargin, cell.contentView.frame.size.height - 10 - optionalMargin))
@@ -311,7 +326,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             valueField.font = UIFont.systemFontOfSize(16.0)
             cell.contentView.addSubview(valueField)
             
-            switch (indexPath!.row) {
+            switch (indexPath.row) {
                 
             // Populate the value for each cell and configure the field UI as apporpriate for each value type
             case 0:
@@ -410,12 +425,12 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             return "\(sign)\(row - 101)dB"
         }
     }
-    
-    func numberOfComponentsInPickerView(_: UIPickerView?) -> Int {
+
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
         return 1
     }
-    
-    func pickerView(pickerView: UIPickerView?, numberOfRowsInComponent component: Int) -> Int {
+
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         // -100dB to +100dB inclusive plus an option to select device default measured power
         return 202
     }
