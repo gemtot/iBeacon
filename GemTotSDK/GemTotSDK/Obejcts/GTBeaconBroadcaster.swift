@@ -230,13 +230,8 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
         
         var topViewController : UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController?
         
-<<<<<<< HEAD
         while (topViewController?.presentedViewController? != nil) {
             topViewController = topViewController?.presentedViewController?
-=======
-        while (topViewController?.presentedViewController != nil) {
-            topViewController = topViewController?.presentedViewController
->>>>>>> FETCH_HEAD
         }
         
         return topViewController?

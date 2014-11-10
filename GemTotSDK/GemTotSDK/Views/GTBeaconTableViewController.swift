@@ -228,20 +228,13 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
                 
                 var charValue: UInt32 = 0
                 let s = "0x" + String(Array(nameSpace)[i]) + String(Array(nameSpace)[i+1])
-<<<<<<< HEAD
+
                 NSScanner(string: s).scanHexInt(&charValue)
-=======
-                NSScanner.scannerWithString(s).scanHexInt(&charValue)
->>>>>>> FETCH_HEAD
                 hashString.appendBytes(&charValue, length: 1)
             }
             
             // Append the UUID String bytes to the hash input
-<<<<<<< HEAD
             let uuidString: NSData = NSString(format:UUIDNameOrString, NSUTF8StringEncoding).dataUsingEncoding(NSUTF8StringEncoding)!
-=======
-            let uuidString: NSData = NSString(CString:UUIDNameOrString, encoding:NSUTF8StringEncoding).dataUsingEncoding(NSUTF8StringEncoding)!
->>>>>>> FETCH_HEAD
             hashString.appendBytes(uuidString.bytes, length: uuidString.length)
             
             // SHA1 hash the input
@@ -250,14 +243,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             // Build the UUID string as defined in RFC 4122
             var part3: UInt32 = 0
             var part4: UInt32 = 0
-<<<<<<< HEAD
             NSScanner(string: (rawUUIDString as NSString).substringWithRange(NSMakeRange(12, 4))).scanHexInt(&part3)
             NSScanner(string: (rawUUIDString as NSString).substringWithRange(NSMakeRange(16, 4))).scanHexInt(&part4)
-=======
-            NSScanner.scannerWithString((rawUUIDString as NSString).substringWithRange(NSMakeRange(12, 4))).scanHexInt(&part3)
-            NSScanner.scannerWithString((rawUUIDString as NSString).substringWithRange(NSMakeRange(16, 4))).scanHexInt(&part4)
->>>>>>> FETCH_HEAD
-            
             let uuidPart3 = String(NSString(format:"%2X", (part3 & 0x0FFF) | 0x5000))
             let uuidPart4 = String(NSString(format:"%2X", (part4 & 0x3FFF) | 0x8000))
             
@@ -300,22 +287,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         
             // Add the image to the table cell
             let cellImage = UIImage(named:"iBeaconTableCell")
-<<<<<<< HEAD
             if let imageView = cell?.imageView {
-=======
-            if let imageView = cell.imageView {
->>>>>>> FETCH_HEAD
                 imageView.image = cellImage
             } else {
                 NSLog("imageView is nil")
             }
 
             // Set the cell label
-<<<<<<< HEAD
             if let textLabel = cell?.textLabel {
-=======
-            if let textLabel = cell.textLabel {
->>>>>>> FETCH_HEAD
                 textLabel.text = NSLocalizedString("Broadcast Signal", comment:"Label of iBeacon Toggle to start or stop broadcasting as an iBeacon") as String
                 textLabel.font = UIFont.systemFontOfSize(16.0)
             } else {
@@ -323,13 +302,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             }
 
             // Add the toggle to the table cell and
-<<<<<<< HEAD
             cell?.accessoryView = UIView(frame: _toggleSwitch.frame)
             if let accessoryView = cell?.accessoryView {
-=======
-            cell.accessoryView = UIView(frame: _toggleSwitch.frame)
-            if let accessoryView = cell.accessoryView {
->>>>>>> FETCH_HEAD
                 accessoryView.addSubview(_toggleSwitch)
             } else {
                 NSLog("accessoryView is nil")
@@ -352,11 +326,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             ]
             
             // Set the cell label
-<<<<<<< HEAD
             if let textLabel = cell?.textLabel {
-=======
-            if let textLabel = cell.textLabel {
->>>>>>> FETCH_HEAD
                 textLabel.text = iBeaconParamsLabels[indexPath.row]
                 textLabel.font = UIFont.systemFontOfSize(16.0)
             } else {
