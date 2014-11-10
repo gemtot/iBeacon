@@ -11,12 +11,12 @@
 		013E6BF91948137100BD0928 /* iBeacon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 013E6BF81948137100BD0928 /* iBeacon.plist */; };
 		013E6BFA1948137100BD0928 /* iBeacon.plist in Resources */ = {isa = PBXBuildFile; fileRef = 013E6BF81948137100BD0928 /* iBeacon.plist */; };
 		019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019496B8194ABF210008A2E7 /* GTBeaconTableViewController.swift */; };
-		019496BC194ABF320008A2E7 /* PKUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 019496BB194ABF320008A2E7 /* PKUUID.m */; };
 		019496C2194ABF6D0008A2E7 /* GemTotSDK.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 019496C1194ABF6D0008A2E7 /* GemTotSDK.entitlements */; };
 		019496C5194ABF7A0008A2E7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 019496C3194ABF7A0008A2E7 /* Main.storyboard */; };
 		019496CA194ABF9F0008A2E7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 019496C9194ABF9F0008A2E7 /* Images.xcassets */; };
 		019496CC194ABFB60008A2E7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019496CB194ABFB60008A2E7 /* AppDelegate.swift */; };
 		019496CF194ABFD00008A2E7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 019496D1194ABFD00008A2E7 /* Info.plist */; };
+		01C1203B19A7270B0009494C /* GTExtensionNSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C1203A19A7270B0009494C /* GTExtensionNSData.swift */; };
 		01C268C21945A7280099B8C1 /* GemTotiBeaconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C268C11945A7280099B8C1 /* GemTotiBeaconTests.swift */; };
 		01C268CF1945A85C0099B8C1 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C268CE1945A85C0099B8C1 /* CoreLocation.framework */; };
 		01C268D11945A8660099B8C1 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01C268D01945A8660099B8C1 /* CoreBluetooth.framework */; };
@@ -41,8 +41,6 @@
 		013E6BF5194812E500BD0928 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		013E6BF81948137100BD0928 /* iBeacon.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = iBeacon.plist; sourceTree = "<group>"; };
 		019496B8194ABF210008A2E7 /* GTBeaconTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GTBeaconTableViewController.swift; path = GemTotSDK/GemTotSDK/Views/GTBeaconTableViewController.swift; sourceTree = "<group>"; };
-		019496BA194ABF320008A2E7 /* PKUUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PKUUID.h; path = GemTotSDK/GemTotSDK/Classes/PKUUID.h; sourceTree = "<group>"; };
-		019496BB194ABF320008A2E7 /* PKUUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PKUUID.m; path = GemTotSDK/GemTotSDK/Classes/PKUUID.m; sourceTree = "<group>"; };
 		019496BF194ABF530008A2E7 /* GemTotSDK-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GemTotSDK-Bridging-Header.h"; sourceTree = "<group>"; };
 		019496C0194ABF530008A2E7 /* GemTotSDKTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GemTotSDKTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		019496C1194ABF6D0008A2E7 /* GemTotSDK.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = GemTotSDK.entitlements; sourceTree = "<group>"; };
@@ -50,6 +48,7 @@
 		019496C9194ABF9F0008A2E7 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		019496CB194ABFB60008A2E7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		019496D0194ABFD00008A2E7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
+		01C1203A19A7270B0009494C /* GTExtensionNSData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GTExtensionNSData.swift; path = GemTotSDK/GemTotSDK/Extensions/GTExtensionNSData.swift; sourceTree = "<group>"; };
 		01C268A71945A7280099B8C1 /* GemTotSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GemTotSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C268BB1945A7280099B8C1 /* GemTotSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GemTotSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01C268C01945A7280099B8C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -61,14 +60,6 @@
 		01C2691B1946C7DE0099B8C1 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		01F24B07194F093C003D3F33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01F24B13194F0A48003D3F33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		01F24B18194F0C35003D3F33 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Main.strings; sourceTree = "<group>"; };
-		01F24B19194F0C35003D3F33 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = th; path = th.lproj/Info.plist; sourceTree = "<group>"; };
-		01F24B1A194F0C35003D3F33 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/Localizable.strings; sourceTree = "<group>"; };
-		01F24B1B194F0C35003D3F33 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		01F24B1C194F0C3F003D3F33 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Main.strings; sourceTree = "<group>"; };
-		01F24B1D194F0C3F003D3F33 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = nl; path = nl.lproj/Info.plist; sourceTree = "<group>"; };
-		01F24B1E194F0C3F003D3F33 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		01F24B1F194F0C3F003D3F33 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +91,14 @@
 			name = Assets;
 			sourceTree = "<group>";
 		};
+		0144DDE919A5A9340053B4F4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				01C1203A19A7270B0009494C /* GTExtensionNSData.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		01C2689E1945A7280099B8C1 = {
 			isa = PBXGroup;
 			children = (
@@ -107,6 +106,7 @@
 				01C26923194717E80099B8C1 /* Legacy Objective-C */,
 				01C268D41945A8EA0099B8C1 /* Views */,
 				01C268D31945A8CE0099B8C1 /* Objects */,
+				0144DDE919A5A9340053B4F4 /* Extensions */,
 				01C268A91945A7280099B8C1 /* GemTotSDK */,
 				01C268DE1945AA3D0099B8C1 /* Frameworks */,
 				01C268BE1945A7280099B8C1 /* GemTotSDKTests */,
@@ -195,8 +195,6 @@
 			children = (
 				019496BF194ABF530008A2E7 /* GemTotSDK-Bridging-Header.h */,
 				019496C0194ABF530008A2E7 /* GemTotSDKTests-Bridging-Header.h */,
-				019496BA194ABF320008A2E7 /* PKUUID.h */,
-				019496BB194ABF320008A2E7 /* PKUUID.m */,
 			);
 			name = "Legacy Objective-C";
 			sourceTree = "<group>";
@@ -250,6 +248,7 @@
 				TargetAttributes = {
 					01C268A61945A7280099B8C1 = {
 						CreatedOnToolsVersion = 6.0;
+						DevelopmentTeam = SSUX2R6S8X;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -272,8 +271,6 @@
 			knownRegions = (
 				en,
 				Base,
-				th,
-				nl,
 			);
 			mainGroup = 01C2689E1945A7280099B8C1;
 			productRefGroup = 01C268A81945A7280099B8C1 /* Products */;
@@ -316,7 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */,
-				019496BC194ABF320008A2E7 /* PKUUID.m in Sources */,
+				01C1203B19A7270B0009494C /* GTExtensionNSData.swift in Sources */,
 				01C269191946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */,
 				019496CC194ABFB60008A2E7 /* AppDelegate.swift in Sources */,
 				01C26916194696260099B8C1 /* GTStorage.swift in Sources */,
@@ -348,8 +345,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				019496C4194ABF7A0008A2E7 /* Base */,
-				01F24B18194F0C35003D3F33 /* th */,
-				01F24B1C194F0C3F003D3F33 /* nl */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -358,8 +353,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				019496D0194ABFD00008A2E7 /* Base */,
-				01F24B19194F0C35003D3F33 /* th */,
-				01F24B1D194F0C3F003D3F33 /* nl */,
 			);
 			name = Info.plist;
 			sourceTree = "<group>";
@@ -368,8 +361,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				01F24B07194F093C003D3F33 /* Base */,
-				01F24B1B194F0C35003D3F33 /* th */,
-				01F24B1F194F0C3F003D3F33 /* nl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -378,8 +369,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				01F24B13194F0A48003D3F33 /* Base */,
-				01F24B1A194F0C35003D3F33 /* th */,
-				01F24B1E194F0C3F003D3F33 /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -404,12 +393,12 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -421,9 +410,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				METAL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -447,7 +437,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -458,8 +449,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				METAL_ENABLE_DEBUG_INFO = NO;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=*]" = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -470,17 +463,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = GemTotSDK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GemTotSDK-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -490,17 +484,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = GemTotSDK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "GemTotSDK-Bridging-Header.h";
 			};
 			name = Release;

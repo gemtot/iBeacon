@@ -14,7 +14,7 @@
 		<string>https://github.com/gemtot/iBeacon.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>GemTotSDK.xcodeproj/project.xcworkspace</string>
+	<string>GemTotSDK.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>3C55CFAB3D2FCE2176B365F25F0D2F06D25E50A3</key>

@@ -78,25 +78,24 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     func startBeaconFor(beaconName: NSString, withMajor: NSNumber, withMinor: NSNumber, withPower: NSNumber) -> (success: Bool, error: NSString?) {
         
         // Validate the paramaters
-        
         // Convert the beaconName NSString to a NSUUID
         let beaconUUID: NSUUID? = NSUUID(UUIDString: beaconName)
         
         // If we don't have a valid UUID, return false
         if (nil == beaconUUID) {
-            return (false, "Invalid UUID")
+            return (false, NSLocalizedString("Invalid UUID", comment:"Message displayed when attempt made to start beacon with an invalid UUID"))
         }
         
         if (0 > withMajor.integerValue || withMajor.integerValue > 0xFFFF) {
-            return (false, "Invalid Major Value")
+            return (false, NSLocalizedString("Invalid Major Value", comment:"Message displayed when attempt made to start beacon with an invalid Major Value"))
         }
         
         if (0 > withMinor.integerValue || withMinor.integerValue > 0xFFFF) {
-            return (false, "Invalid Major Value")
+            return (false, NSLocalizedString("Invalid Minor Value", comment:"Message displayed when attempt made to start beacon with an invalid Minor Value"))
         }
         
         if (-128 > withPower.integerValue || withPower.integerValue > 127) {
-            return (false, "Invalid Power Value")
+            return (false, NSLocalizedString("Invalid Power Value", comment:"Message displayed when attempt made to start beacon with an invalid Power Value"))
         }
         
         // Check the current state of the pepipheral manager
@@ -121,7 +120,11 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
             
             let alert = UIAlertController(title: NSLocalizedString("Bluetooth must be available and enabled to configure your device as an iBeacon", comment:"Alert that is shown if Bluetooth is not available"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
-            getTopWindow().presentViewController(alert, animated: true, completion: nil)
+            if let topWindow = getTopWindow() {
+                topWindow.presentViewController(alert, animated: true, completion: nil)
+            } else {
+                NSLog("topWindow is nil")
+            }
             NSNotificationCenter.defaultCenter().postNotificationName("iBeaconBroadcastStatus", object: nil, userInfo: ["broadcastStatus" : false])
             
         } else {
@@ -132,7 +135,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
             // Attempt to set up a peripheral with the measured power
             let peripheralData = region.peripheralDataWithMeasuredPower((withPower.integerValue == 127) ? nil : withPower)
             // if we have a peripheral, start advertising
-            if (peripheralData) {
+            if (peripheralData != nil) {
                 
                 _peripheralManager!.startAdvertising(peripheralData)
                 
@@ -223,14 +226,14 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     */
     
     //
-    func getTopWindow()-> UIViewController {
+    func getTopWindow()->UIViewController? {
         
-        var topViewController = UIApplication.sharedApplication().keyWindow.rootViewController
+        var topViewController : UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController?
         
-        while (topViewController.presentedViewController) {
-            topViewController = topViewController.presentedViewController
+        while (topViewController?.presentedViewController? != nil) {
+            topViewController = topViewController?.presentedViewController?
         }
         
-        return topViewController
+        return topViewController?
     }
 }
