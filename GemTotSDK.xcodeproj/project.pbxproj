@@ -25,6 +25,7 @@
 		01C269191946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C269181946C76D0099B8C1 /* GTBeaconBroadcaster.swift */; };
 		01C2691A1946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C269181946C76D0099B8C1 /* GTBeaconBroadcaster.swift */; };
 		01F24B12194F0A48003D3F33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01F24B14194F0A48003D3F33 /* Localizable.strings */; };
+		96482F7E1BC4AE0600635761 /* GTExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96482F7D1BC4AE0600635761 /* GTExtensionString.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		01C2691B1946C7DE0099B8C1 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		01F24B07194F093C003D3F33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01F24B13194F0A48003D3F33 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		96482F7D1BC4AE0600635761 /* GTExtensionString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GTExtensionString.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				01C1203A19A7270B0009494C /* GTExtensionNSData.swift */,
+				96482F7D1BC4AE0600635761 /* GTExtensionString.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -243,12 +246,14 @@
 		01C2689F1945A7280099B8C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "PassKit, Inc.";
 				TargetAttributes = {
 					01C268A61945A7280099B8C1 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = SSUX2R6S8X;
+						DevelopmentTeam = 6CMKAP6EJS;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
@@ -315,6 +320,7 @@
 				019496B9194ABF210008A2E7 /* GTBeaconTableViewController.swift in Sources */,
 				01C1203B19A7270B0009494C /* GTExtensionNSData.swift in Sources */,
 				01C269191946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */,
+				96482F7E1BC4AE0600635761 /* GTExtensionString.swift in Sources */,
 				019496CC194ABFB60008A2E7 /* AppDelegate.swift in Sources */,
 				01C26916194696260099B8C1 /* GTStorage.swift in Sources */,
 			);

@@ -31,7 +31,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     let _beaconConfig : GTStorage = GTStorage.sharedGTStorage
     
     // Shared core bluetooth peripheral manager
-    let _peripheralManager : CBPeripheralManager? = nil
+    var _peripheralManager : CBPeripheralManager?
     
     // Singleton pattern
     class var sharedGTBeaconBroadcaster:GTBeaconBroadcaster {
@@ -56,10 +56,10 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     
     func startBeacon()  -> (success: Bool, error: NSString?) {
         
-        return startBeaconFor(_beaconConfig.getValue("UUID", fromStore:"iBeacon") as NSString,
-            withMajor: _beaconConfig.getValue("major", fromStore:"iBeacon") as NSNumber,
-            withMinor: _beaconConfig.getValue("minor", fromStore:"iBeacon") as NSNumber,
-            withPower: _beaconConfig.getValue("power", fromStore:"iBeacon") as NSNumber)
+        return startBeaconFor(_beaconConfig.getValue("UUID", fromStore:"iBeacon") as! NSString,
+            withMajor: _beaconConfig.getValue("major", fromStore:"iBeacon") as! NSNumber,
+            withMinor: _beaconConfig.getValue("minor", fromStore:"iBeacon") as! NSNumber,
+            withPower: _beaconConfig.getValue("power", fromStore:"iBeacon") as! NSNumber)
     }
     
     /**
@@ -79,7 +79,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
         
         // Validate the paramaters
         // Convert the beaconName NSString to a NSUUID
-        let beaconUUID: NSUUID? = NSUUID(UUIDString: beaconName)
+        let beaconUUID: NSUUID? = NSUUID(UUIDString: beaconName as String)
         
         // If we don't have a valid UUID, return false
         if (nil == beaconUUID) {
@@ -133,11 +133,22 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
             let region = CLBeaconRegion(proximityUUID:beaconUUID!, major:withMajor.unsignedShortValue, minor:withMinor.unsignedShortValue, identifier:"com.gemtots.afr")
             
             // Attempt to set up a peripheral with the measured power
-            let peripheralData = region.peripheralDataWithMeasuredPower((withPower.integerValue == 127) ? nil : withPower)
+            let peripheralData : NSMutableDictionary? = region.peripheralDataWithMeasuredPower((withPower.integerValue == 127) ? nil : withPower)
+            
+            
             // if we have a peripheral, start advertising
             if (peripheralData != nil) {
                 
-                _peripheralManager!.startAdvertising(peripheralData)
+                // let's first convert NSMutableDicitionary to swift Dictionary
+                var swiftDict : Dictionary<String,AnyObject!> = Dictionary<String,AnyObject!>()
+                for key : AnyObject in peripheralData!.allKeys {
+                    let stringKey = key as! String
+                    if let keyValue = peripheralData!.valueForKey(stringKey){
+                        swiftDict[stringKey] = keyValue
+                    }
+                }
+                
+                _peripheralManager!.startAdvertising(swiftDict)
                 
                 // update the config dictionary to indicate we are broadcasting
                 _beaconConfig.writeValue(true as NSNumber, forKey: "broadcasting", toStore: "iBeacon")
@@ -195,13 +206,13 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     *
     */
     
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!) {
+    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
         
-        if (peripheral!.state == CBPeripheralManagerState.PoweredOn) {
+        if (peripheral.state == CBPeripheralManagerState.PoweredOn) {
             
-            let shouldBroadcast: Bool = (_beaconConfig.getValue("broadcasting", fromStore: "iBeacon") as NSNumber).boolValue
+            let shouldBroadcast: Bool = (_beaconConfig.getValue("broadcasting", fromStore: "iBeacon") as! NSNumber).boolValue
             
-            if (peripheral!.isAdvertising != shouldBroadcast) {
+            if (peripheral.isAdvertising != shouldBroadcast) {
                 
                 let notificationPayload = ["broadcastStatus" : shouldBroadcast]
                 
@@ -228,12 +239,12 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     //
     func getTopWindow()->UIViewController? {
         
-        var topViewController : UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController?
+        var topViewController : UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController
         
-        while (topViewController?.presentedViewController? != nil) {
-            topViewController = topViewController?.presentedViewController?
+        while (topViewController?.presentedViewController != nil) {
+            topViewController = topViewController?.presentedViewController
         }
         
-        return topViewController?
+        return topViewController
     }
 }
