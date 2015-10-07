@@ -25,7 +25,7 @@
 		01C269191946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C269181946C76D0099B8C1 /* GTBeaconBroadcaster.swift */; };
 		01C2691A1946C76D0099B8C1 /* GTBeaconBroadcaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C269181946C76D0099B8C1 /* GTBeaconBroadcaster.swift */; };
 		01F24B12194F0A48003D3F33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01F24B14194F0A48003D3F33 /* Localizable.strings */; };
-		96482F7E1BC4AE0600635761 /* GTExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96482F7D1BC4AE0600635761 /* GTExtensionString.swift */; settings = {ASSET_TAGS = (); }; };
+		96482F7E1BC4AE0600635761 /* GTExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96482F7D1BC4AE0600635761 /* GTExtensionString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -253,7 +253,6 @@
 				TargetAttributes = {
 					01C268A61945A7280099B8C1 = {
 						CreatedOnToolsVersion = 6.0;
-						DevelopmentTeam = 6CMKAP6EJS;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 0;
