@@ -214,7 +214,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             //var ccount: UInt16 = 16 + UUIDNameOrString.characters.count.value as UInt16
             
             // Variable to hold the hashed namespace
-            var hashString = NSMutableData()
+            let hashString = NSMutableData()
             
             // Unique seed namespace - keep to generate UUIDs compatible with PassKit, or change to avoid conflicts
             // Needs to be a hexadecimal value - ideally a UUID
@@ -280,7 +280,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.section == 0) {
         
-            var cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
+            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
         
             // Add the image to the table cell
             let cellImage = UIImage(named:"iBeaconTableCell")
@@ -312,7 +312,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             return cell!
     
         } else {
-            var cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconCell")
+            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconCell")
             
             
             let iBeaconParamsLabels = [
@@ -332,7 +332,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
 
             // Create and add a text field to the cell that will contain the value
             let optionalMargin: CGFloat = 10.0
-            var valueField = UITextField(frame: CGRectMake(170, 10, cell!.contentView.frame.size.width - 170 - optionalMargin, cell!.contentView.frame.size.height - 10 - optionalMargin))
+            let valueField = UITextField(frame: CGRectMake(170, 10, cell!.contentView.frame.size.width - 170 - optionalMargin, cell!.contentView.frame.size.height - 10 - optionalMargin))
             valueField.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
             valueField.delegate = self
             valueField.returnKeyType = UIReturnKeyType.Done
@@ -344,7 +344,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
                 
             // Populate the value for each cell and configure the field UI as apporpriate for each value type
             case 0:
-                valueField.text = _iBeaconConfig.getValue("beaconName", fromStore: "iBeacon") as! String
+                valueField.text = _iBeaconConfig.getValue("beaconName", fromStore: "iBeacon") as? String
                 valueField.placeholder = NSLocalizedString("Name or UUID", comment:"Placehoder text for iBeacon name field")
                 valueField.tag = 1
             
@@ -464,7 +464,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     *
     **************************************************************************************/
     
-    func pickerView(_: UIPickerView?, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(_: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
 
         if (row == 0) {
             // Set the first row of the picker view as an option to select the device default measured power
@@ -492,14 +492,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     *
     **************************************************************************************/
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         // Dismiss the keyboard
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldShouldEndEditing(textField: UITextField!) -> Bool {
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
         
         switch (textField.tag) {
             
@@ -538,7 +538,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             if (row == 0) {
                 targetText = NSLocalizedString("Device Default", comment:"Label shown in table cell to indicate deivce will broadcast the default measured power")
             } else {
-                targetText = self.pickerView(_dbPicker, titleForRow: row, forComponent: 0)
+                targetText = self.pickerView(_dbPicker, titleForRow: row, forComponent: 0)!
             }
             
             if (textField.text != targetText) {
@@ -556,7 +556,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField!) {
+    func textFieldDidEndEditing(textField: UITextField) {
         
         // Store the updated values in the config dictionary
         switch (textField.tag) {
@@ -577,7 +577,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         
         // If the beacon is broadcasting - dispatch a job to restart the beacon which will pick up the new values
         if (_toggleSwitch.on) {
-            dispatch_async(dispatch_get_main_queue(), {var beacon = self._beacon.startBeacon()})
+            dispatch_async(dispatch_get_main_queue(), {_ = self._beacon.startBeacon()})
         }
         
         // Dismiss the keyboard
