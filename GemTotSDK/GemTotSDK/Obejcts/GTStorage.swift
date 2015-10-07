@@ -19,6 +19,7 @@
 
 import UIKit
 
+
 // Constant to hold a singleton instance
 let _GlobalGTSharedStorageInstance = GTStorage()
 
@@ -102,24 +103,16 @@ class GTStorage: NSObject {
     func checkStore(storeName: String) -> String? {
         
         let storePath = _documentsDirectory.stringByAppendingPathComponent("\(storeName).plist")
+        
         let fileManager = NSFileManager.defaultManager()
         
         if (!fileManager.fileExistsAtPath(storePath)) {
             
             if let bundle = NSBundle.mainBundle().pathForResource(storeName, ofType:"plist") {
-                var error : NSError? = nil
-                
-                fileManager.copyItemAtPath(bundle, toPath: storePath, error: &error)
-                
-                if (nil == error) {
-                    
-                    return storePath
-                    
-                } else {
-                    
-                    NSLog( NSError.description())
-                    return nil
-                }
+                // TODO : Should handle the error but for now assuming
+                // that the error would not occur and hence try!
+                try! fileManager.copyItemAtPath(bundle, toPath: storePath)
+                return storePath
             } else {
                 return nil
             }

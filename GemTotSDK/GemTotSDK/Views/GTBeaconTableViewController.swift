@@ -31,10 +31,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     let _iBeaconConfig : GTStorage = GTStorage.sharedGTStorage // Dictionary containing beacon config parameters
     let _beacon : GTBeaconBroadcaster = GTBeaconBroadcaster.sharedGTBeaconBroadcaster // Shared instance to allow continuous broadcasting after this view is dismissed
     
-    required init(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
-    }
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +98,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     // Copy the UUID to the clipboard
     func copyUUID(sender: AnyObject) {
         
-        let UUID = _iBeaconConfig.getValue("UUID", fromStore:"iBeacon") as String
+        let UUID = _iBeaconConfig.getValue("UUID", fromStore:"iBeacon") as! String
         let pasteBoard: UIPasteboard = UIPasteboard.generalPasteboard()
         pasteBoard.string = UUID
         
@@ -121,7 +118,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             if (beaconStarted.success == false) {
                 _toggleSwitch.setOn(false, animated: false)
                 let alert = UIAlertController(title: NSLocalizedString("Error Starting Beacon", comment:"Alert title for problemn starting beacon"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-                alert.message = beaconStarted.error
+                alert.message = beaconStarted.error as? String
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
             }
@@ -139,9 +136,9 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         
         let packageContents : NSDictionary = notification.userInfo! as Dictionary
         
-        _toggleSwitch.setOn(packageContents.objectForKey("broadcastStatus") as Bool, animated: false)
+        _toggleSwitch.setOn(packageContents.objectForKey("broadcastStatus") as! Bool, animated: false)
         
-        if (packageContents.objectForKey("broadcastStatus") as Bool) {
+        if (packageContents.objectForKey("broadcastStatus") as! Bool) {
             
             if (!_beacon.beaconStatus()) {
                 _beacon.startBeacon()
@@ -154,7 +151,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     // Utility function to construct the footer message containin the advertising paramaters
     func footerString() -> String {
         
-        let UUID = _iBeaconConfig.getValue("UUID", fromStore:"iBeacon") as String
+        let UUID = _iBeaconConfig.getValue("UUID", fromStore:"iBeacon") as! String
         
         // Hack to ensure toggle is correctly set on first startup
         _toggleSwitch.setOn(_beacon.beaconStatus(), animated: false)
@@ -163,9 +160,9 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         if (_beacon.beaconStatus() == true) {
             
             // retrieve the current values from the config dictionary
-            let major = _iBeaconConfig.getValue("major", fromStore:"iBeacon") as NSNumber
-            let minor = _iBeaconConfig.getValue("minor", fromStore:"iBeacon") as NSNumber
-            let power = _iBeaconConfig.getValue("power", fromStore: "iBeacon") as NSNumber
+            let major = _iBeaconConfig.getValue("major", fromStore:"iBeacon") as! NSNumber
+            let minor = _iBeaconConfig.getValue("minor", fromStore:"iBeacon") as! NSNumber
+            let power = _iBeaconConfig.getValue("power", fromStore: "iBeacon") as! NSNumber
             
             // Construct a readable string from the power value
             var powerString : String
@@ -208,26 +205,26 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         // Test if UUIDNameOrString is a valid UUID, and if so, set the return it
         let range = UUIDNameOrString.rangeOfString("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .RegularExpressionSearch)
         
-        if (range != nil && countElements(UUIDNameOrString) == 36) {
+        if (range != nil && UUIDNameOrString.characters.count == 36) {
             
           return UUIDNameOrString
             
         } else {
             
-            var ccount: UInt16 = 16 + countElements(UUIDNameOrString)
+            //var ccount: UInt16 = 16 + UUIDNameOrString.characters.count.value as UInt16
             
             // Variable to hold the hashed namespace
-            var hashString = NSMutableData()
+            let hashString = NSMutableData()
             
             // Unique seed namespace - keep to generate UUIDs compatible with PassKit, or change to avoid conflicts
             // Needs to be a hexadecimal value - ideally a UUID
             let nameSpace: String = "b8672a1f84f54e7c97bdff3e9cea6d7a"
             
             // Convert each byte of the seed namespace to a character value and append the character byte
-            for var i = 0; i < countElements(nameSpace); i+=2 {
+            for var i = 0; i < nameSpace.characters.count; i+=2 {
                 
                 var charValue: UInt32 = 0
-                let s = "0x" + String(Array(nameSpace)[i]) + String(Array(nameSpace)[i+1])
+                let s = "0x" + String(Array(nameSpace.characters)[i]) + String(Array(nameSpace.characters)[i+1])
 
                 NSScanner(string: s).scanHexInt(&charValue)
                 hashString.appendBytes(&charValue, length: 1)
@@ -283,7 +280,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.section == 0) {
         
-            var cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
+            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
         
             // Add the image to the table cell
             let cellImage = UIImage(named:"iBeaconTableCell")
@@ -315,7 +312,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             return cell!
     
         } else {
-            var cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconCell")
+            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconCell")
             
             
             let iBeaconParamsLabels = [
@@ -335,8 +332,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
 
             // Create and add a text field to the cell that will contain the value
             let optionalMargin: CGFloat = 10.0
-            var valueField = UITextField(frame: CGRectMake(170, 10, cell!.contentView.frame.size.width - 170 - optionalMargin, cell!.contentView.frame.size.height - 10 - optionalMargin))
-            valueField.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+            let valueField = UITextField(frame: CGRectMake(170, 10, cell!.contentView.frame.size.width - 170 - optionalMargin, cell!.contentView.frame.size.height - 10 - optionalMargin))
+            valueField.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
             valueField.delegate = self
             valueField.returnKeyType = UIReturnKeyType.Done
             valueField.clearButtonMode = UITextFieldViewMode.WhileEditing
@@ -347,26 +344,26 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
                 
             // Populate the value for each cell and configure the field UI as apporpriate for each value type
             case 0:
-                valueField.text = _iBeaconConfig.getValue("beaconName", fromStore: "iBeacon") as String
+                valueField.text = _iBeaconConfig.getValue("beaconName", fromStore: "iBeacon") as? String
                 valueField.placeholder = NSLocalizedString("Name or UUID", comment:"Placehoder text for iBeacon name field")
                 valueField.tag = 1
             
             case 1:
-                valueField.text = (_iBeaconConfig.getValue("major", fromStore: "iBeacon") as NSNumber).stringValue
+                valueField.text = (_iBeaconConfig.getValue("major", fromStore: "iBeacon") as! NSNumber).stringValue
                 valueField.placeholder = NSLocalizedString("0 - 65,535", comment:"iBeacon Major and Minor placehoder (represents min and max values)")
                 valueField.keyboardType = UIKeyboardType.NumberPad
                 valueField.inputAccessoryView = _numberToolbar
                 valueField.tag = 2
                 
             case 2:
-                valueField.text = (_iBeaconConfig.getValue("minor", fromStore: "iBeacon") as NSNumber).stringValue
+                valueField.text = (_iBeaconConfig.getValue("minor", fromStore: "iBeacon") as! NSNumber).stringValue
                 valueField.placeholder = NSLocalizedString("0 - 65,535", comment:"iBeacon Major and Minor placehoder (represents min and max values)")
                 valueField.keyboardType = UIKeyboardType.NumberPad
                 valueField.inputAccessoryView = _numberToolbar
                 valueField.tag = 3
 
             case 3:
-                let powerValue = _iBeaconConfig.getValue("power", fromStore: "iBeacon") as Int
+                let powerValue = _iBeaconConfig.getValue("power", fromStore: "iBeacon") as! Int
             
                 if (powerValue == 127) {
                     valueField.text = NSLocalizedString("Device Default", comment:"Label shown in table cell to indicate deivce will broadcast the default measured power")
@@ -467,7 +464,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     *
     **************************************************************************************/
     
-    func pickerView(_: UIPickerView?, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(_: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
 
         if (row == 0) {
             // Set the first row of the picker view as an option to select the device default measured power
@@ -495,14 +492,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     *
     **************************************************************************************/
     
-    func textFieldShouldReturn(textField: UITextField!) -> Bool {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         // Dismiss the keyboard
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldShouldEndEditing(textField: UITextField!) -> Bool {
+    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
         
         switch (textField.tag) {
             
@@ -515,7 +512,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         case 2...3:
             
             // Validate the major and minor values before accepting.  If invalid, throw an alert and empty the field
-            if (textField.text.toInt() > 0xFFFF) {
+            if (Int(textField.text!) > 0xFFFF) {
                 let alert = UIAlertController(title: NSLocalizedString("Invalid Value", comment:"Alert title for invalid values"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
                 alert.message = NSLocalizedString("Major and Minor keys can only accept a value between 0 and 65,535", comment:"Alert message to show if user enters an invalid Major or Minor value")
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
@@ -541,7 +538,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             if (row == 0) {
                 targetText = NSLocalizedString("Device Default", comment:"Label shown in table cell to indicate deivce will broadcast the default measured power")
             } else {
-                targetText = self.pickerView(_dbPicker, titleForRow: row, forComponent: 0)
+                targetText = self.pickerView(_dbPicker, titleForRow: row, forComponent: 0)!
             }
             
             if (textField.text != targetText) {
@@ -559,20 +556,20 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField!) {
+    func textFieldDidEndEditing(textField: UITextField) {
         
         // Store the updated values in the config dictionary
         switch (textField.tag) {
             
         case 1:
-            _iBeaconConfig.writeValue(textField.text as NSString, forKey:"beaconName", toStore:"iBeacon")
-            _iBeaconConfig.writeValue(UUIDforString(textField.text) as NSString, forKey:"UUID", toStore:"iBeacon")
+            _iBeaconConfig.writeValue(textField.text, forKey:"beaconName", toStore:"iBeacon")
+            _iBeaconConfig.writeValue(UUIDforString(textField.text!), forKey:"UUID", toStore:"iBeacon")
             
         case 2:
-            _iBeaconConfig.writeValue(textField.text.toInt()! as NSNumber, forKey: "major", toStore: "iBeacon")
+            _iBeaconConfig.writeValue(Int(textField.text!)!, forKey: "major", toStore: "iBeacon")
             
         case 3:
-            _iBeaconConfig.writeValue(textField.text.toInt()! as NSNumber, forKey: "minor", toStore: "iBeacon")
+            _iBeaconConfig.writeValue(Int(textField.text!)!, forKey: "minor", toStore: "iBeacon")
             
         default:
             break
@@ -580,7 +577,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         
         // If the beacon is broadcasting - dispatch a job to restart the beacon which will pick up the new values
         if (_toggleSwitch.on) {
-            dispatch_async(dispatch_get_main_queue(), {var beacon = self._beacon.startBeacon()})
+            dispatch_async(dispatch_get_main_queue(), {_ = self._beacon.startBeacon()})
         }
         
         // Dismiss the keyboard
