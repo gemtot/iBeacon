@@ -111,7 +111,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     // callback funciton called whenever the toggle changes state
     func toggleBeacon(sender :AnyObject!) {
         
-        let state = sender.isOn
+        let button = sender as! UISwitch
+        let state = button.on
         
         if (state == true) {
             let beaconStarted = _beacon.startBeacon()
