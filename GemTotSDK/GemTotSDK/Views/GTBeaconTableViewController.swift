@@ -256,8 +256,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             }
             
             // Append the UUID String bytes to the hash input
-            let uuidString: NSData = NSString(format:UUIDNameOrString, NSUTF8StringEncoding).dataUsingEncoding(NSUTF8StringEncoding)!
-            hashString.appendBytes(uuidString.bytes, length: uuidString.length)
+            let uuidString: Data = UUIDNameOrString.data(using: String.Encoding.utf8)!
+            hashString.append((uuidString as NSData).bytes, length: uuidString.count)
             
             // SHA1 hash the input
             let rawUUIDString = String(hashString.sha1())
