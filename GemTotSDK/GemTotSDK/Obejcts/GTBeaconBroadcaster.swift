@@ -42,7 +42,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
         super.init()
         
         // Init the peripheral manager instance
-        _peripheralManager = CBPeripheralManager(delegate: self, queue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0))
+        _peripheralManager = CBPeripheralManager(delegate: self, queue:DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default))
     }
     
     /**
@@ -54,7 +54,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     *
     */
     
-    func startBeacon()  -> (success: Bool, error: NSString?) {
+    @discardableResult func startBeacon()  -> (success: Bool, error: NSString?) {
         
         return startBeaconFor(_beaconConfig.getValue("UUID", fromStore:"iBeacon") as! NSString,
             withMajor: _beaconConfig.getValue("major", fromStore:"iBeacon") as! NSNumber,
@@ -75,27 +75,27 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     *
     */
     
-    func startBeaconFor(beaconName: NSString, withMajor: NSNumber, withMinor: NSNumber, withPower: NSNumber) -> (success: Bool, error: NSString?) {
+    func startBeaconFor(_ beaconName: NSString, withMajor: NSNumber, withMinor: NSNumber, withPower: NSNumber) -> (success: Bool, error: NSString?) {
         
         // Validate the paramaters
         // Convert the beaconName NSString to a NSUUID
-        let beaconUUID: NSUUID? = NSUUID(UUIDString: beaconName as String)
+        let beaconUUID: UUID? = UUID(uuidString: beaconName as String)
         
         // If we don't have a valid UUID, return false
         if (nil == beaconUUID) {
-            return (false, NSLocalizedString("Invalid UUID", comment:"Message displayed when attempt made to start beacon with an invalid UUID"))
+            return (false, NSLocalizedString("Invalid UUID", comment:"Message displayed when attempt made to start beacon with an invalid UUID") as NSString)
         }
         
-        if (0 > withMajor.integerValue || withMajor.integerValue > 0xFFFF) {
-            return (false, NSLocalizedString("Invalid Major Value", comment:"Message displayed when attempt made to start beacon with an invalid Major Value"))
+        if (0 > withMajor.intValue || withMajor.intValue > 0xFFFF) {
+            return (false, NSLocalizedString("Invalid Major Value", comment:"Message displayed when attempt made to start beacon with an invalid Major Value") as NSString)
         }
         
-        if (0 > withMinor.integerValue || withMinor.integerValue > 0xFFFF) {
-            return (false, NSLocalizedString("Invalid Minor Value", comment:"Message displayed when attempt made to start beacon with an invalid Minor Value"))
+        if (0 > withMinor.intValue || withMinor.intValue > 0xFFFF) {
+            return (false, NSLocalizedString("Invalid Minor Value", comment:"Message displayed when attempt made to start beacon with an invalid Minor Value") as NSString)
         }
         
-        if (-128 > withPower.integerValue || withPower.integerValue > 127) {
-            return (false, NSLocalizedString("Invalid Power Value", comment:"Message displayed when attempt made to start beacon with an invalid Power Value"))
+        if (-128 > withPower.intValue || withPower.intValue > 127) {
+            return (false, NSLocalizedString("Invalid Power Value", comment:"Message displayed when attempt made to start beacon with an invalid Power Value") as NSString)
         }
         
         // Check the current state of the pepipheral manager
@@ -109,42 +109,42 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
         
         // Wait for up to a second to retrieve the radio state if the state is unknown
         var i = 0;
-        while (i < 1000 && _peripheralManager!.state == CBPeripheralManagerState.Unknown ) {
-            NSThread.sleepForTimeInterval(0.001);
-            i++;
+        while (i < 1000 && _peripheralManager!.state == .unknown ) {
+            Thread.sleep(forTimeInterval: 0.001);
+            i += 1;
         }
         // NSLog("Radio took %dms to report state", i);
         
         // If we do not have access to the Bluetooth radio, display an alert in the current view controller
-        if(_peripheralManager!.state != CBPeripheralManagerState.PoweredOn) {
+        if(_peripheralManager!.state != .poweredOn) {
             
-            let alert = UIAlertController(title: NSLocalizedString("Bluetooth must be available and enabled to configure your device as an iBeacon", comment:"Alert that is shown if Bluetooth is not available"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
+            let alert = UIAlertController(title: NSLocalizedString("Bluetooth must be available and enabled to configure your device as an iBeacon", comment:"Alert that is shown if Bluetooth is not available"), message: nil, preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.cancel, handler: nil))
             if let topWindow = getTopWindow() {
-                topWindow.presentViewController(alert, animated: true, completion: nil)
+                topWindow.present(alert, animated: true, completion: nil)
             } else {
                 NSLog("topWindow is nil")
             }
-            NSNotificationCenter.defaultCenter().postNotificationName("iBeaconBroadcastStatus", object: nil, userInfo: ["broadcastStatus" : false])
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "iBeaconBroadcastStatus"), object: nil, userInfo: ["broadcastStatus" : false])
             
         } else {
             
             // Set up a beacon region with the UUID, Major and Minor values
-            let region = CLBeaconRegion(proximityUUID:beaconUUID!, major:withMajor.unsignedShortValue, minor:withMinor.unsignedShortValue, identifier:"com.gemtots.afr")
+            let region = CLBeaconRegion(proximityUUID:beaconUUID!, major:withMajor.uint16Value, minor:withMinor.uint16Value, identifier:"com.gemtots.afr")
             
             // Attempt to set up a peripheral with the measured power
-            let peripheralData : NSMutableDictionary? = region.peripheralDataWithMeasuredPower((withPower.integerValue == 127) ? nil : withPower)
+            let peripheralData : NSMutableDictionary? = region.peripheralData(withMeasuredPower: (withPower.intValue == 127) ? nil : withPower)
             
             
             // if we have a peripheral, start advertising
             if (peripheralData != nil) {
                 
                 // let's first convert NSMutableDicitionary to swift Dictionary
-                var swiftDict : Dictionary<String,AnyObject!> = Dictionary<String,AnyObject!>()
-                for key : AnyObject in peripheralData!.allKeys {
+                var swiftDict : Dictionary<String,AnyObject?> = Dictionary<String,AnyObject!>()
+                for key in peripheralData!.allKeys {
                     let stringKey = key as! String
-                    if let keyValue = peripheralData!.valueForKey(stringKey){
-                        swiftDict[stringKey] = keyValue
+                    if let keyValue = peripheralData!.value(forKey: stringKey){
+                        swiftDict[stringKey] = keyValue as AnyObject
                     }
                 }
                 
@@ -206,9 +206,9 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     *
     */
     
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         
-        if (peripheral.state == CBPeripheralManagerState.PoweredOn) {
+        if (peripheral.state == .poweredOn) {
             
             let shouldBroadcast: Bool = (_beaconConfig.getValue("broadcasting", fromStore: "iBeacon") as! NSNumber).boolValue
             
@@ -218,10 +218,10 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
                 
                 if (shouldBroadcast == true) {
                     startBeacon()
-                    NSNotificationCenter.defaultCenter().postNotificationName("iBeaconBroadcastStatus", object: nil, userInfo: notificationPayload)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "iBeaconBroadcastStatus"), object: nil, userInfo: notificationPayload)
                 } else {
                     stopBeacon()
-                    NSNotificationCenter.defaultCenter().postNotificationName("iBeaconBroadcastStatus", object: nil, userInfo: notificationPayload)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "iBeaconBroadcastStatus"), object: nil, userInfo: notificationPayload)
                 }
             }
         }
@@ -239,7 +239,7 @@ class GTBeaconBroadcaster: NSObject, CBPeripheralManagerDelegate {
     //
     func getTopWindow()->UIViewController? {
         
-        var topViewController : UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController
+        var topViewController : UIViewController? = UIApplication.shared.keyWindow?.rootViewController
         
         while (topViewController?.presentedViewController != nil) {
             topViewController = topViewController?.presentedViewController

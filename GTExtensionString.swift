@@ -10,8 +10,8 @@ import Foundation
 
 extension String {
     
-    func stringByAppendingPathComponent(path: String) -> String {
+    func stringByAppendingPathComponent(_ path: String) -> String {
         let nsSt = self as NSString
-        return nsSt.stringByAppendingPathComponent(path)
+        return nsSt.appendingPathComponent(path)
     }
 }
