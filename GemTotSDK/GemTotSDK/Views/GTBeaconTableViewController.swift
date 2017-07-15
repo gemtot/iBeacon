@@ -19,13 +19,37 @@
 
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     // Constants - form elements
     let _toggleSwitch : UISwitch = UISwitch()
     let _dbPicker : UIPickerView = UIPickerView()
-    let _numberToolbar : UIToolbar = UIToolbar(frame: CGRectMake(0.0,0.0,320.0,50.0))
+    let _numberToolbar : UIToolbar = UIToolbar(frame: CGRect(x: 0.0,y: 0.0,width: 320.0,height: 50.0))
 
     // Shared objects
     let _iBeaconConfig : GTStorage = GTStorage.sharedGTStorage // Dictionary containing beacon config parameters
@@ -40,8 +64,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         self.clearsSelectionOnViewWillAppear = false
         
         // Subscribe to notifications on toggle changes
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "toggleStatus:", name: "iBeaconBroadcastStatus", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onKeyboardHide:", name: UIKeyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GTBeaconTableViewController.toggleStatus(_:)), name: NSNotification.Name(rawValue: "iBeaconBroadcastStatus"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(GTBeaconTableViewController.onKeyboardHide(_:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
         // Conifgure the toolbar and pickerview
         configureToolbarToggleAndPicker()
@@ -67,61 +91,61 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         
         // Configure the toolbar that sits above the numeric keypad
         let toolbarButtonItems = [
-            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(title: NSLocalizedString("Done", comment: "Button to accept the iBeacon paramaters and dismiss the keyboard"), style: .Plain, target: self, action: "dismissKeyboard:")
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(title: NSLocalizedString("Done", comment: "Button to accept the iBeacon paramaters and dismiss the keyboard"), style: .plain, target: self, action: #selector(GTBeaconTableViewController.dismissKeyboard(_:)))
         ]
         
         _numberToolbar.setItems(toolbarButtonItems, animated:false)
-        _numberToolbar.barStyle = UIBarStyle.Default
-        _numberToolbar.translucent = true
+        _numberToolbar.barStyle = UIBarStyle.default
+        _numberToolbar.isTranslucent = true
         _numberToolbar.sizeToFit()
         
         // Configure the date picker
         _dbPicker.dataSource = self;
         _dbPicker.delegate = self;
-        _dbPicker.backgroundColor = UIColor.whiteColor()
+        _dbPicker.backgroundColor = UIColor.white
         
         // Configure the toggle
         _toggleSwitch.setOn(_beacon.beaconStatus(), animated: false)
-        _toggleSwitch.addTarget(self, action: "toggleBeacon:", forControlEvents: UIControlEvents.ValueChanged)
+        _toggleSwitch.addTarget(self, action: #selector(GTBeaconTableViewController.toggleBeacon(_:)), for: UIControlEvents.valueChanged)
         
     }
     
     // Adds a tap gesture to the background to dismiss the keyboard if users click outside of the keyboard of input cells and a tap gesture to the table footer to copy the UUID to the clipboard
     func addTapGestureRecognizers() {
         
-        let tapBackground : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard:")
+        let tapBackground : UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GTBeaconTableViewController.dismissKeyboard(_:)))
         self.view.addGestureRecognizer(tapBackground)
         
     }
     
     // Copy the UUID to the clipboard
-    func copyUUID(sender: AnyObject) {
+    func copyUUID(_ sender: AnyObject) {
         
         let UUID = _iBeaconConfig.getValue("UUID", fromStore:"iBeacon") as! String
-        let pasteBoard: UIPasteboard = UIPasteboard.generalPasteboard()
+        let pasteBoard: UIPasteboard = UIPasteboard.general
         pasteBoard.string = UUID
         
-        let alert = UIAlertController(title: NSLocalizedString("UUID copied clipboard", comment:"Alert UUID Copied to Clipboard"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: NSLocalizedString("UUID copied clipboard", comment:"Alert UUID Copied to Clipboard"), message: nil, preferredStyle: UIAlertControllerStyle.alert)
         alert.message = "\n" + UUID
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // callback funciton called whenever the toggle changes state
-    func toggleBeacon(sender :AnyObject!) {
+    func toggleBeacon(_ sender :AnyObject!) {
         
         let button = sender as! UISwitch
-        let state = button.on
+        let state = button.isOn
         
         if (state == true) {
             let beaconStarted = _beacon.startBeacon()
             if (beaconStarted.success == false) {
                 _toggleSwitch.setOn(false, animated: false)
-                let alert = UIAlertController(title: NSLocalizedString("Error Starting Beacon", comment:"Alert title for problemn starting beacon"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: NSLocalizedString("Error Starting Beacon", comment:"Alert title for problemn starting beacon"), message: nil, preferredStyle: UIAlertControllerStyle.alert)
                 alert.message = beaconStarted.error as? String
-                alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         
         } else {
@@ -133,13 +157,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
     
-    func toggleStatus(notification: NSNotification) {
+    func toggleStatus(_ notification: Notification) {
         
-        let packageContents : NSDictionary = notification.userInfo! as Dictionary
         
-        _toggleSwitch.setOn(packageContents.objectForKey("broadcastStatus") as! Bool, animated: false)
+        let packageContents : NSDictionary = NSDictionary(dictionary: notification.userInfo!)
         
-        if (packageContents.objectForKey("broadcastStatus") as! Bool) {
+        _toggleSwitch.setOn(packageContents.object(forKey: "broadcastStatus") as! Bool, animated: false)
+        
+        if (packageContents.object(forKey: "broadcastStatus") as! Bool) {
             
             if (!_beacon.beaconStatus()) {
                 _beacon.startBeacon()
@@ -168,12 +193,12 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             // Construct a readable string from the power value
             var powerString : String
             
-            if (power.integerValue == 127) {
+            if (power.intValue == 127) {
                 
                 powerString = NSLocalizedString("Device Default", comment:"Label shown in table cell to indicate deivce will broadcast the default measured power")
                 
             } else {
-                let sign = (power.integerValue <= 0  ? "" : "+")
+                let sign = (power.intValue <= 0  ? "" : "+")
                 powerString = "\(sign)\(power)dB"
             }
             
@@ -191,20 +216,24 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         
     }
 
-    func dismissKeyboard(sender: AnyObject) {
+    func dismissKeyboard(_ sender: AnyObject) {
         self.view.endEditing(true)
     }
     
     // Reloads the table to update the footer message whenever the keyboard is dismissed
-    func onKeyboardHide(notification: NSNotification!) {
+    func onKeyboardHide(_ notification: Notification!) {
         self.tableView.reloadData()
     }
     
     // Function to check if string is a UUID, or to generate a constant UUID from a string
-    func UUIDforString(UUIDNameOrString: String) -> String {
+    func UUIDforString(_ UUIDNameOrString: String) -> String {
         
+        var UUIDNameOrString = UUIDNameOrString.UUIDWithDashes()
+
         // Test if UUIDNameOrString is a valid UUID, and if so, set the return it
-        let range = UUIDNameOrString.rangeOfString("^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .RegularExpressionSearch)
+        
+        //let range = UUIDNameOrString.range(of: "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .regularExpression)
+        let range = UUIDNameOrString.range(of: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", options: .regularExpression)
         
         if (range != nil && UUIDNameOrString.characters.count == 36) {
             
@@ -222,18 +251,17 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             let nameSpace: String = "b8672a1f84f54e7c97bdff3e9cea6d7a"
             
             // Convert each byte of the seed namespace to a character value and append the character byte
-            for var i = 0; i < nameSpace.characters.count; i+=2 {
-                
+            for i in stride(from: 0, to: nameSpace.characters.count, by: 2){
                 var charValue: UInt32 = 0
                 let s = "0x" + String(Array(nameSpace.characters)[i]) + String(Array(nameSpace.characters)[i+1])
-
-                NSScanner(string: s).scanHexInt(&charValue)
-                hashString.appendBytes(&charValue, length: 1)
+                
+                Scanner(string: s).scanHexInt32(&charValue)
+                hashString.append(&charValue, length: 1)
             }
             
             // Append the UUID String bytes to the hash input
-            let uuidString: NSData = NSString(format:UUIDNameOrString, NSUTF8StringEncoding).dataUsingEncoding(NSUTF8StringEncoding)!
-            hashString.appendBytes(uuidString.bytes, length: uuidString.length)
+            let uuidString: Data = UUIDNameOrString.data(using: String.Encoding.utf8)!
+            hashString.append((uuidString as NSData).bytes, length: uuidString.count)
             
             // SHA1 hash the input
             let rawUUIDString = String(hashString.sha1())
@@ -241,16 +269,16 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             // Build the UUID string as defined in RFC 4122
             var part3: UInt32 = 0
             var part4: UInt32 = 0
-            NSScanner(string: (rawUUIDString as NSString).substringWithRange(NSMakeRange(12, 4))).scanHexInt(&part3)
-            NSScanner(string: (rawUUIDString as NSString).substringWithRange(NSMakeRange(16, 4))).scanHexInt(&part4)
+            Scanner(string: (rawUUIDString! as NSString).substring(with: NSMakeRange(12, 4))).scanHexInt32(&part3)
+            Scanner(string: (rawUUIDString! as NSString).substring(with: NSMakeRange(16, 4))).scanHexInt32(&part4)
             let uuidPart3 = String(NSString(format:"%2X", (part3 & 0x0FFF) | 0x5000))
             let uuidPart4 = String(NSString(format:"%2X", (part4 & 0x3FFF) | 0x8000))
             
-            return  "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(0, 8)))-" +
-                    "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(8, 4)))-" +
-                    "\(uuidPart3.lowercaseString)-" +
-                    "\(uuidPart4.lowercaseString)-" +
-                    "\((rawUUIDString as NSString).substringWithRange(NSMakeRange(20, 12)))"
+            return  "\((rawUUIDString! as NSString).substring(with: NSMakeRange(0, 8)))-" +
+                    "\((rawUUIDString! as NSString).substring(with: NSMakeRange(8, 4)))-" +
+                    "\(uuidPart3.lowercased())-" +
+                    "\(uuidPart4.lowercased())-" +
+                    "\((rawUUIDString! as NSString).substring(with: NSMakeRange(20, 12)))"
         }
     }
     
@@ -262,11 +290,11 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     *
     **************************************************************************************/
     
-    override func numberOfSectionsInTableView(tableView: UITableView?) -> Int {
+    override func numberOfSections(in tableView: UITableView?) -> Int {
         return 2
     }
     
-    override func tableView(tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView?, numberOfRowsInSection section: Int) -> Int {
         if (section == 0) {
             return 1
         } else {
@@ -274,14 +302,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         }
     }
     
-    override func tableView(tableView: UITableView?, didSelectRowAtIndexPath indexPath: NSIndexPath?) {
-        tableView!.userInteractionEnabled = false
+    override func tableView(_ tableView: UITableView?, didSelectRowAt indexPath: IndexPath) {
+        tableView!.isUserInteractionEnabled = false
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (indexPath.section == 0) {
         
-            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconToggle")
+            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "iBeaconToggle")
         
             // Add the image to the table cell
             let cellImage = UIImage(named:"iBeaconTableCell")
@@ -294,7 +322,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             // Set the cell label
             if let textLabel = cell?.textLabel {
                 textLabel.text = NSLocalizedString("Broadcast Signal", comment:"Label of iBeacon Toggle to start or stop broadcasting as an iBeacon") as String
-                textLabel.font = UIFont.systemFontOfSize(16.0)
+                textLabel.font = UIFont.systemFont(ofSize: 16.0)
             } else {
                 NSLog("textLabel is nil")
             }
@@ -308,12 +336,12 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             }
 
             // Make the cell non-selectable (only the toggle will be active)
-            cell?.selectionStyle = UITableViewCellSelectionStyle.None
+            cell?.selectionStyle = UITableViewCellSelectionStyle.none
 
             return cell!
     
         } else {
-            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "iBeaconCell")
+            let cell :UITableViewCell? = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "iBeaconCell")
             
             
             let iBeaconParamsLabels = [
@@ -326,19 +354,19 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             // Set the cell label
             if let textLabel = cell?.textLabel {
                 textLabel.text = iBeaconParamsLabels[indexPath.row]
-                textLabel.font = UIFont.systemFontOfSize(16.0)
+                textLabel.font = UIFont.systemFont(ofSize: 16.0)
             } else {
                 NSLog("textLabel is nil")
             }
 
             // Create and add a text field to the cell that will contain the value
             let optionalMargin: CGFloat = 10.0
-            let valueField = UITextField(frame: CGRectMake(170, 10, cell!.contentView.frame.size.width - 170 - optionalMargin, cell!.contentView.frame.size.height - 10 - optionalMargin))
-            valueField.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
+            let valueField = UITextField(frame: CGRect(x: 170, y: 10, width: cell!.contentView.frame.size.width - 170 - optionalMargin, height: cell!.contentView.frame.size.height - 10 - optionalMargin))
+            valueField.autoresizingMask = [UIViewAutoresizing.flexibleWidth, UIViewAutoresizing.flexibleHeight]
             valueField.delegate = self
-            valueField.returnKeyType = UIReturnKeyType.Done
-            valueField.clearButtonMode = UITextFieldViewMode.WhileEditing
-            valueField.font = UIFont.systemFontOfSize(16.0)
+            valueField.returnKeyType = UIReturnKeyType.done
+            valueField.clearButtonMode = UITextFieldViewMode.whileEditing
+            valueField.font = UIFont.systemFont(ofSize: 16.0)
             cell?.contentView.addSubview(valueField)
             
             switch (indexPath.row) {
@@ -352,14 +380,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             case 1:
                 valueField.text = (_iBeaconConfig.getValue("major", fromStore: "iBeacon") as! NSNumber).stringValue
                 valueField.placeholder = NSLocalizedString("0 - 65,535", comment:"iBeacon Major and Minor placehoder (represents min and max values)")
-                valueField.keyboardType = UIKeyboardType.NumberPad
+                valueField.keyboardType = UIKeyboardType.numberPad
                 valueField.inputAccessoryView = _numberToolbar
                 valueField.tag = 2
                 
             case 2:
                 valueField.text = (_iBeaconConfig.getValue("minor", fromStore: "iBeacon") as! NSNumber).stringValue
                 valueField.placeholder = NSLocalizedString("0 - 65,535", comment:"iBeacon Major and Minor placehoder (represents min and max values)")
-                valueField.keyboardType = UIKeyboardType.NumberPad
+                valueField.keyboardType = UIKeyboardType.numberPad
                 valueField.inputAccessoryView = _numberToolbar
                 valueField.tag = 3
 
@@ -375,8 +403,8 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
                 valueField.tag = 4
                 valueField.inputView = _dbPicker
                 valueField.inputAccessoryView = _numberToolbar
-                valueField.clearButtonMode = UITextFieldViewMode.Never
-                valueField.tintColor = UIColor.clearColor() // This will hide the flashing cursor
+                valueField.clearButtonMode = UITextFieldViewMode.never
+                valueField.tintColor = UIColor.clear // This will hide the flashing cursor
                 
             default:
                 break
@@ -386,12 +414,12 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
 
     //Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView?, canEditRowAtIndexPath indexPath: NSIndexPath?) -> Bool {
+    override func tableView(_ tableView: UITableView?, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
     }
 
     //Override to support custom section headers.
-    override func tableView(tableView: UITableView?, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView?, titleForHeaderInSection section: Int) -> String? {
         
         if (section == 0) {
             return NSLocalizedString("Beacon Status", comment: "Header of first section of iBeacon view")
@@ -404,17 +432,17 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
 
 
-    override func tableView(tableView: UITableView?, viewForFooterInSection section: Int) -> UIView? {
+    override func tableView(_ tableView: UITableView?, viewForFooterInSection section: Int) -> UIView? {
         
         if (section == 1) {
             
             let label: UILabel = UILabel()
-            label.userInteractionEnabled = true
+            label.isUserInteractionEnabled = true
             label.text = footerString()
-            label.baselineAdjustment = UIBaselineAdjustment.AlignBaselines;
+            label.baselineAdjustment = UIBaselineAdjustment.alignBaselines;
 
-            label.font = UIFont.systemFontOfSize(UIFont.smallSystemFontSize())
-            label.textColor = UIColor.grayColor()
+            label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+            label.textColor = UIColor.gray
             label.numberOfLines = 0
             label.sizeToFit()
             
@@ -433,7 +461,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             view.sizeToFit()
 
             // Add a Gesture Recognizer to copy the UUID to the Clipboard
-            let tapTableFooter : UITapGestureRecognizer = UITapGestureRecognizer (target: self, action: "copyUUID:")
+            let tapTableFooter : UITapGestureRecognizer = UITapGestureRecognizer (target: self, action: #selector(GTBeaconTableViewController.copyUUID(_:)))
             tapTableFooter.numberOfTapsRequired = 1
             label.addGestureRecognizer(tapTableFooter)
 
@@ -443,7 +471,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         return nil
     }
     
-    override func tableView(tableView: UITableView?, heightForFooterInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView?, heightForFooterInSection section: Int) -> CGFloat {
     
         if (section == 1) {
             return 100;
@@ -454,7 +482,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     
     
     // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView?, canMoveRowAtIndexPath indexPath: NSIndexPath?) -> Bool {
+    override func tableView(_ tableView: UITableView?, canMoveRowAt indexPath: IndexPath) -> Bool {
         return false
     }
 
@@ -478,11 +506,11 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         }
     }
 
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         // -100dB to +100dB inclusive plus an option to select device default measured power
         return 202
     }
@@ -493,14 +521,14 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     *
     **************************************************************************************/
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         // Dismiss the keyboard
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         
         switch (textField.tag) {
             
@@ -514,10 +542,10 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             
             // Validate the major and minor values before accepting.  If invalid, throw an alert and empty the field
             if (Int(textField.text!) > 0xFFFF) {
-                let alert = UIAlertController(title: NSLocalizedString("Invalid Value", comment:"Alert title for invalid values"), message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: NSLocalizedString("Invalid Value", comment:"Alert title for invalid values"), message: nil, preferredStyle: UIAlertControllerStyle.alert)
                 alert.message = NSLocalizedString("Major and Minor keys can only accept a value between 0 and 65,535", comment:"Alert message to show if user enters an invalid Major or Minor value")
-                alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.Cancel, handler: nil))
-                self.presentViewController(alert, animated: true, completion: nil)
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Okay", comment:"OK button used to dismiss alerts"), style: UIAlertActionStyle.cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
                 
                 textField.text = ""
             
@@ -532,7 +560,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             
         case 4:
             // Check if the picker view value is different to the field value and if so, update the field value and the config dictionary
-            let row = _dbPicker.selectedRowInComponent(0)
+            let row = _dbPicker.selectedRow(inComponent: 0)
             
             var targetText = ""
             
@@ -545,7 +573,7 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             if (textField.text != targetText) {
                 
                 textField.text = targetText
-                let dBValue: NSNumber = (row == 0 ? 127 : row - 101)
+                let dBValue: NSNumber = NSNumber(integerLiteral:(row == 0 ? 127 : row - 101))
                 _iBeaconConfig.writeValue(dBValue as NSNumber, forKey: "power", toStore: "iBeacon")
                 
             }
@@ -557,28 +585,28 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
         return true
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         
         // Store the updated values in the config dictionary
         switch (textField.tag) {
             
         case 1:
-            _iBeaconConfig.writeValue(textField.text, forKey:"beaconName", toStore:"iBeacon")
-            _iBeaconConfig.writeValue(UUIDforString(textField.text!), forKey:"UUID", toStore:"iBeacon")
+            _iBeaconConfig.writeValue(textField.text as AnyObject, forKey:"beaconName", toStore:"iBeacon")
+            _iBeaconConfig.writeValue(UUIDforString(textField.text!) as AnyObject, forKey:"UUID", toStore:"iBeacon")
             
         case 2:
-            _iBeaconConfig.writeValue(Int(textField.text!)!, forKey: "major", toStore: "iBeacon")
+            _iBeaconConfig.writeValue(Int(textField.text!)! as AnyObject, forKey: "major", toStore: "iBeacon")
             
         case 3:
-            _iBeaconConfig.writeValue(Int(textField.text!)!, forKey: "minor", toStore: "iBeacon")
+            _iBeaconConfig.writeValue(Int(textField.text!)! as AnyObject, forKey: "minor", toStore: "iBeacon")
             
         default:
             break
         }
         
         // If the beacon is broadcasting - dispatch a job to restart the beacon which will pick up the new values
-        if (_toggleSwitch.on) {
-            dispatch_async(dispatch_get_main_queue(), {_ = self._beacon.startBeacon()})
+        if (_toggleSwitch.isOn) {
+            DispatchQueue.main.async(execute: {_ = self._beacon.startBeacon()})
         }
         
         // Dismiss the keyboard
@@ -586,11 +614,11 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     }
     
 
-    @IBAction func openSourceCode(sender: AnyObject) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "http://github.com/gemtot")!)
+    @IBAction func openSourceCode(_ sender: AnyObject) {
+        UIApplication.shared.openURL(URL(string: "http://github.com/gemtot")!)
     }
     
-    @IBAction func buyBeacons(sender: AnyObject) {
-        UIApplication.sharedApplication().openURL(NSURL(string: "http://gemtot.com/")!)
+    @IBAction func buyBeacons(_ sender: AnyObject) {
+        UIApplication.shared.openURL(URL(string: "http://gemtot.com/")!)
     }
 }

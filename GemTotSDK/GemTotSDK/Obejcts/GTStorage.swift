@@ -31,7 +31,7 @@ class GTStorage: NSObject {
     }
     
     // Documents directory
-    let _documentsDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+    let _documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
     
     /**
     *
@@ -44,13 +44,13 @@ class GTStorage: NSObject {
     *
     */
     
-    func getValue(keyName: String, fromStore: String) -> AnyObject! {
+    func getValue(_ keyName: String, fromStore: String) -> AnyObject! {
         
         if let path = checkStore(fromStore)! as String? {
         
             let dict :NSDictionary? = NSDictionary(contentsOfFile: path)
         
-            let objectValue : AnyObject! = dict?.objectForKey(keyName)
+            let objectValue : AnyObject! = dict?.object(forKey: keyName) as AnyObject
         
             return objectValue
         } else {
@@ -71,18 +71,18 @@ class GTStorage: NSObject {
     *
     */
     
-    func writeValue(value: AnyObject!, forKey: String, toStore: String) {
+    func writeValue(_ value: AnyObject!, forKey: String, toStore: String) {
         
         if let path = checkStore(toStore)! as String? {
  
             let dict :NSMutableDictionary? = NSMutableDictionary(contentsOfFile: path)
         
-            let old: AnyObject! = dict?.objectForKey(forKey)
+            let old: AnyObject! = dict?.object(forKey: forKey) as AnyObject
             
             if (!old.isEqual(value)) {
             
                 dict?.setValue(value, forKey: forKey)
-                dict?.writeToFile(path, atomically: true)
+                dict?.write(toFile: path, atomically: true)
             }
         }
     }
@@ -100,18 +100,18 @@ class GTStorage: NSObject {
     */
     
 
-    func checkStore(storeName: String) -> String? {
+    func checkStore(_ storeName: String) -> String? {
         
         let storePath = _documentsDirectory.stringByAppendingPathComponent("\(storeName).plist")
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         
-        if (!fileManager.fileExistsAtPath(storePath)) {
+        if (!fileManager.fileExists(atPath: storePath)) {
             
-            if let bundle = NSBundle.mainBundle().pathForResource(storeName, ofType:"plist") {
+            if let bundle = Bundle.main.path(forResource: storeName, ofType:"plist") {
                 // TODO : Should handle the error but for now assuming
                 // that the error would not occur and hence try!
-                try! fileManager.copyItemAtPath(bundle, toPath: storePath)
+                try! fileManager.copyItem(atPath: bundle, toPath: storePath)
                 return storePath
             } else {
                 return nil
