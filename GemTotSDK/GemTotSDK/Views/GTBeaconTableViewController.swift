@@ -228,8 +228,12 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
     // Function to check if string is a UUID, or to generate a constant UUID from a string
     func UUIDforString(_ UUIDNameOrString: String) -> String {
         
+        var UUIDNameOrString = UUIDNameOrString.UUIDWithDashes()
+
         // Test if UUIDNameOrString is a valid UUID, and if so, set the return it
-        let range = UUIDNameOrString.range(of: "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .regularExpression)
+        
+        //let range = UUIDNameOrString.range(of: "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5][0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}$", options: .regularExpression)
+        let range = UUIDNameOrString.range(of: "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", options: .regularExpression)
         
         if (range != nil && UUIDNameOrString.characters.count == 36) {
             
@@ -265,16 +269,16 @@ class GTBeaconTableViewController: UITableViewController, UIPickerViewDelegate, 
             // Build the UUID string as defined in RFC 4122
             var part3: UInt32 = 0
             var part4: UInt32 = 0
-            Scanner(string: (rawUUIDString as! NSString).substring(with: NSMakeRange(12, 4))).scanHexInt32(&part3)
-            Scanner(string: (rawUUIDString as! NSString).substring(with: NSMakeRange(16, 4))).scanHexInt32(&part4)
+            Scanner(string: (rawUUIDString! as NSString).substring(with: NSMakeRange(12, 4))).scanHexInt32(&part3)
+            Scanner(string: (rawUUIDString! as NSString).substring(with: NSMakeRange(16, 4))).scanHexInt32(&part4)
             let uuidPart3 = String(NSString(format:"%2X", (part3 & 0x0FFF) | 0x5000))
             let uuidPart4 = String(NSString(format:"%2X", (part4 & 0x3FFF) | 0x8000))
             
-            return  "\((rawUUIDString as! NSString).substring(with: NSMakeRange(0, 8)))-" +
-                    "\((rawUUIDString as! NSString).substring(with: NSMakeRange(8, 4)))-" +
+            return  "\((rawUUIDString! as NSString).substring(with: NSMakeRange(0, 8)))-" +
+                    "\((rawUUIDString! as NSString).substring(with: NSMakeRange(8, 4)))-" +
                     "\(uuidPart3.lowercased())-" +
                     "\(uuidPart4.lowercased())-" +
-                    "\((rawUUIDString as! NSString).substring(with: NSMakeRange(20, 12)))"
+                    "\((rawUUIDString! as NSString).substring(with: NSMakeRange(20, 12)))"
         }
     }
     
